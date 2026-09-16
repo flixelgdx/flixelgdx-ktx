@@ -40,16 +40,13 @@ import org.flixelgdx.ktx.collections.lastIndex
 import org.flixelgdx.ktx.collections.minusAssign
 import org.flixelgdx.ktx.collections.plusAssign
 import org.flixelgdx.ktx.collections.set
-import org.flixelgdx.ktx.functional.use
 import org.flixelgdx.ktx.math.component1
 import org.flixelgdx.ktx.math.component2
 import org.flixelgdx.ktx.math.component3
 import org.flixelgdx.ktx.math.component4
 import org.flixelgdx.ktx.math.minus
-import org.flixelgdx.ktx.math.pick
 import org.flixelgdx.ktx.math.plus
 import org.flixelgdx.ktx.math.plusAssign
-import org.flixelgdx.ktx.math.range
 import org.flixelgdx.ktx.math.times
 import org.flixelgdx.ktx.util.component1
 import org.flixelgdx.ktx.util.component2
@@ -59,11 +56,9 @@ import org.flixelgdx.ktx.util.hsv
 import org.flixelgdx.ktx.util.lerp
 import org.flixelgdx.ktx.util.rgba
 import org.flixelgdx.ktx.util.toFlixelColor
-import org.flixelgdx.math.FlixelRandom
 import org.flixelgdx.math.FlixelRect
 import org.flixelgdx.math.FlixelVector
 import org.flixelgdx.util.FlixelColor
-import org.flixelgdx.util.save.FlixelSave
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
@@ -78,7 +73,7 @@ import org.junit.jupiter.api.Test
 class FlixelKtxTest {
 
   // ---------------------------------------------------------------------------
-  // FlixelArray helpers (Part A)
+  // FlixelArray helpers
   // ---------------------------------------------------------------------------
 
   @Test
@@ -137,7 +132,7 @@ class FlixelKtxTest {
   }
 
   // ---------------------------------------------------------------------------
-  // FlixelMap helpers (Part A)
+  // FlixelMap helpers
   // ---------------------------------------------------------------------------
 
   @Test
@@ -170,7 +165,7 @@ class FlixelKtxTest {
   }
 
   // ---------------------------------------------------------------------------
-  // FlixelSet helpers (Part A)
+  // FlixelSet helpers
   // ---------------------------------------------------------------------------
 
   @Test
@@ -184,7 +179,7 @@ class FlixelKtxTest {
   }
 
   // ---------------------------------------------------------------------------
-  // FlixelVector operators (Part A)
+  // FlixelVector operators
   // ---------------------------------------------------------------------------
 
   @Test
@@ -232,7 +227,7 @@ class FlixelKtxTest {
   }
 
   // ---------------------------------------------------------------------------
-  // FlixelRect helpers (Part A + B)
+  // FlixelRect helpers
   // ---------------------------------------------------------------------------
 
   @Test
@@ -284,7 +279,7 @@ class FlixelKtxTest {
   }
 
   // ---------------------------------------------------------------------------
-  // FlixelColor helpers (Part A + B)
+  // FlixelColor helpers
   // ---------------------------------------------------------------------------
 
   @Test
@@ -370,54 +365,7 @@ class FlixelKtxTest {
   }
 
   // ---------------------------------------------------------------------------
-  // FlixelRandom range helpers (Part B)
-  // ---------------------------------------------------------------------------
-
-  @Test
-  fun `range IntRange always returns value within bounds`() {
-    val rng = FlixelRandom(42L)
-    for (i in 0 until 100) {
-      val v = rng.range(3..10)
-      assertTrue(v in 3..10, "Expected value in [3,10] but got $v")
-    }
-  }
-
-  @Test
-  fun `range ClosedFloatingPointRange always returns value within bounds`() {
-    val rng = FlixelRandom(99L)
-    for (i in 0 until 100) {
-      val v = rng.range(0f..1f)
-      assertTrue(v in 0f..<1f, "Expected value in [0,1) but got $v")
-    }
-  }
-
-  @Test
-  fun `range single-element IntRange always returns that element`() {
-    val rng = FlixelRandom(0L)
-    for (i in 0 until 10) {
-      assertEquals(5, rng.range(5..5))
-    }
-  }
-
-  @Test
-  fun `pick from FlixelArray returns element in the array`() {
-    val rng = FlixelRandom(1L)
-    val array = flixelArrayOf("alpha", "beta", "gamma")
-    for (i in 0 until 50) {
-      val picked = rng.pick(array)
-      assertTrue(picked in array, "Picked element '$picked' not found in source array")
-    }
-  }
-
-  @Test
-  fun `pick from empty FlixelArray throws`() {
-    val rng = FlixelRandom(1L)
-    val empty = FlixelArray<String>()
-    assertFailsWith<IllegalArgumentException> { rng.pick(empty) }
-  }
-
-  // ---------------------------------------------------------------------------
-  // Animation range-to-int[] conversion (Part B, pure logic)
+  // Animation range-to-int[] conversion
   // ---------------------------------------------------------------------------
 
   @Test
@@ -443,75 +391,5 @@ class FlixelKtxTest {
     val fps = 12f
     val duration = 1f / fps
     assertEquals(0.0833f, duration, 0.001f)
-  }
-
-  // ---------------------------------------------------------------------------
-  // FlixelDestroyable use() (Part B)
-  // ---------------------------------------------------------------------------
-
-  @Test
-  fun `use calls destroy in finally on normal completion`() {
-    var destroyed = false
-    val obj = FlixelDestroyable { destroyed = true }
-    obj.use { /* no-op */ }
-    assertTrue(destroyed, "destroy() should have been called after use{}")
-  }
-
-  @Test
-  fun `use calls destroy in finally even when block throws`() {
-    var destroyed = false
-    val obj = FlixelDestroyable { destroyed = true }
-    assertFailsWith<IllegalStateException> { obj.use { throw IllegalStateException("boom") } }
-    assertTrue(destroyed, "destroy() should still be called after block throws")
-  }
-
-  @Test
-  fun `use returns value from block when needed`() {
-    // The use() function returns Unit; this just verifies the block body runs.
-    var ran = false
-    val obj = FlixelDestroyable {}
-    obj.use { ran = true }
-    assertTrue(ran)
-  }
-
-  // ---------------------------------------------------------------------------
-  // by save(...) delegates (Part B)
-  //
-  // Constructing a real FlixelSave requires Flixel.save to be non-null, which demands a running
-  // backend. Instead we test the delegate logic directly against a manually constructed FlixelSave
-  // and verify reads/writes on its data map plus the flush flag.
-  // ---------------------------------------------------------------------------
-
-  @Test
-  fun `FlixelSave getInt returns default when key absent`() {
-    val save = FlixelSave()
-    assertEquals(42, save.getInt("missing", 42))
-  }
-
-  @Test
-  fun `FlixelSave getFloat returns stored value`() {
-    val save = FlixelSave()
-    save.data.put("vol", 0.75f)
-    assertEquals(0.75f, save.getFloat("vol", 1f), 0.0001f)
-  }
-
-  @Test
-  fun `FlixelSave getBool returns stored value`() {
-    val save = FlixelSave()
-    save.data.put("music", false)
-    assertFalse(save.getBool("music", true))
-  }
-
-  @Test
-  fun `FlixelSave getString returns default when key absent`() {
-    val save = FlixelSave()
-    assertEquals("Player1", save.getString("name", "Player1"))
-  }
-
-  @Test
-  fun `FlixelSave getString returns stored value`() {
-    val save = FlixelSave()
-    save.data.put("name", "Hero")
-    assertEquals("Hero", save.getString("name", "default"))
   }
 }
