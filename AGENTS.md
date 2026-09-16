@@ -1,17 +1,23 @@
-# FlixelGDX (project instructions for AI assistants)
+# FlixelGDX KTX (project instructions for AI assistants)
 
 ---
 
-## Project context (FlixelGDX)
+## Project context
 
-FlixelGDX is a general-purposed Java game framework, primarily build on **bgfx + SDL3** (with WebGL for HTML5).
-It aims for strong performance and tooling, so game development stays modernized, approachable, and accessible.
+FlixelGDX KTX is the official Kotlin extension layer for [FlixelGDX](https://github.com/flixelgdx/flixelgdx).
+It is a **pure syntax layer**: operator overloads, extension functions, property delegates, and DSL builders
+that make the Java-based FlixelGDX API feel natural from Kotlin. It contains no runtime logic of its own and
+adds no new framework behavior.
 
-The overarching goal is to bring HaxeFlixel-style features into Java's ecosystem while staying as memory-efficient
-and developer friendly as humanly possible without giving up features games need.
+This repository has two published modules:
 
-This repository is the **standalone framework**. Runtime verification happens in a **separate test project**, consuming
-the framework via `publishToMavenLocal`, a composite build, or JitPack from a GitHub branch/commit.
+- **`flixelgdx-ktx-core`**: Extensions for collections, tweens, signals, saves, math types, groups, colors,
+  and animations.
+- **`flixelgdx-ktx-async`**: Coroutine integration; depends on `flixelgdx-ktx-core` and
+  `kotlinx-coroutines-core`.
+
+Runtime verification happens in a **separate game project** that consumes the extension via
+`publishToMavenLocal`, a composite build, or JitPack.
 
 ---
 
@@ -22,267 +28,139 @@ is ambiguous.
 
 - Before implementing anything (planning or coding):
 
-  1. Ask yourself whether the requested design or refactor is actually good for FlixelGDX.
-  2. If it hurts the framework, breaks invariants, or there is clearly a better path, **stop before editing files or running commands**.
-  3. Explain why (pros and cons), suggest better alternatives, and ask whether the user still wants to proceed.
-  4. If they confirm after that discussion, proceed as requested.
+  1. Ask yourself whether the requested design actually fits the KTX extension's purpose. A contribution
+     belongs here if it is Kotlin syntax sugar over an existing FlixelGDX API. New framework behavior belongs
+     in the base framework instead.
+  2. If the change hurts the extension, breaks invariants, or there is clearly a better path, **stop before
+     editing files or running commands**. Explain why, suggest alternatives, and ask whether the user still
+     wants to proceed.
+  3. If they confirm after that discussion, proceed as requested.
 
-- If you are unsure about something, whether that would be for a library, a specific aspect of the framework's codebase, etc., do **not** assume anything.
-  Always verify first before making an assumption. If you are still unsure about something, ignore it and bring it up to the user when you're done completing a task.
+- If you are unsure about something, whether that would be for a library, a specific aspect of the codebase,
+  or the base framework's API, do **not** assume anything. Verify first. If you are still unsure, ignore it
+  and bring it up when you are done with the task.
 
 ---
 
 ## Explaining things for beginners and contributors
 
-The framework welcomes new contributors learning open source.
+The project welcomes new contributors learning open source and Kotlin.
 
 When explaining code or introducing patterns:
 
 - Explain **why** before **how** (motivation before mechanics).
 - Use analogies for complex systems; if the user gave no analogy topic, ask for one they like.
 - End **complex** explanations with a short check-in question so you can verify understanding.
-- Stay encouraging and professional. Assume intelligence but not deep familiarity with Java or FlixelGDX quirks.
+- Stay encouraging and professional. Assume intelligence but not deep familiarity with Kotlin idioms or
+  FlixelGDX internals.
 
 ---
 
 ## Code quality (non-negotiables)
 
-### Performance, Memory, and allocations
+### Allocations
 
-- **Do not allocate objects inside loops or in methods invoked every frame.** That rule is strict. Prefer reuse, pooling,
-  indexed `for` loops, and performance-oriented helpers such as FlixelGDX's `FlixelString` or `FlixelMap`.
-- **Always put fields in the correct order for each class**. Follow the order below:
+**Do not allocate objects in any code path that might be called per frame.** Extension functions on game
+objects (`FlixelSprite`, `FlixelGroup`, etc.) are the most likely hot paths. The extension is explicitly
+designed to stay allocation-free so it is safe in `update()` and `draw()`.
 
-  1. `long`s and `double`s
-  2. `int`s, `float`s, and object references
-  3. `short`s and `char`s
-  4. `boolean`s and `byte`s
+Prefer:
+- `inline` functions for DSL lambdas (avoids the lambda wrapper object).
+- Fields over local objects for any reusable temporary state.
+- Non-capturing lambdas and direct function references.
 
-- **Standard Java collections are completely banned**. They take up too much memory and allocate too many objects when they're
-  used. Prefer FlixelGDX `collections` package instead, which are significantly more lean and don't allocate garbage when used. 
-  The only exception to this rule is build-time tools like plugins, since they do not impact a game's performance at runtime
-  and the framework's code can't be accessed at that phase anyway.
-- **Reflection is banned**. It breaks many platforms that require ahead-of-time compilation and is unstable for situations 
-  like version bumps. If reflection must be used, don't touch the main area requiring it, and bring it up at the end of 
-  your task, explaining why it's needed.
-- **Do not use deprecated APIs**. If one *is* used, replace it with the modernized, recommended version instead.
+### No standard Java collections
 
-### Coding style
+Standard Java collection types (`ArrayList`, `HashMap`, `HashSet`, etc.) are banned in both modules for the
+same reasons they are banned in the base framework: they allocate too much garbage and consume too much
+memory. Use FlixelGDX collection types (`FlixelArray`, `FlixelMap`, `FlixelSet`, and so on) instead.
+The only exception is build-time code (Gradle plugins), which does not run at game runtime.
 
-**Always put fields, modifiers, types, and methods in the correct order**. This keeps the code readable and consistent.
-Follow the orders below:
+### No reflection
 
-#### Modifiers
+Reflection is banned. It breaks AOT compilers and any platform target that requires ahead-of-time
+compilation. If reflection appears to be needed, do not use it; stop and bring it up with the user.
 
-1. `public`
-2. `protected`
-3. default
-4. `private`
-5. `static`
-6. `final`
+### No deprecated APIs
 
-#### Fields, Methods/Functions and Types
-
-1. Fields (following the alignment padding rule!)
-2. Constructors, with smallest to largest parameters top to bottom
-3. Methods (if there are overloads, order them smallest to largest parameters top to bottom)
-4. Simple Getter/Setter methods (below every other method)
-5. Inner classes
-6. Inner interfaces
-7. Inner enums
-
-#### Example
-
-```java
-/*
- * Copyright notice here...
- */
-package org.flixelgdx.example;
-
-/**
- * Rich and detailed Javadoc here.
- *
- * <p>Other details here.
- */
-public class PerformanceObject {
-
-  public static final long GLOBAL_LIMIT = 5000L;
-  public static final int MAX_RETRIES = 5;
-  public static String systemNodeName = "PRIMARY_NODE";
-  public static char systemMode = 'V';
-
-  protected static double internalWeight = 42.42;
-
-  static final double VERSION_STABILITY = 1.0;
-  static final float GRAVITY_CONSTANT = 9.81f;
-
-  private static Object sharedLock = new Object();
-  private static byte systemHeader = 0x1;
-
-  public final long createdAt;
-  private double sensorValue;
-
-  public int instanceId;
-  protected float velocity;
-  private String displayName;
-  private FlixelList<String> metadata;
-
-  public short localFlags;
-  private char categoryCode;
-
-  public boolean isActive;
-  private byte checksum;
-
-  public PerformanceObject() {
-    this(-1);
-  }
-
-  public PerformanceObject(int instanceId) {
-    this(instanceId, "GENERIC_INSTANCE", 0.0f);
-  }
-
-  public PerformanceObject(int instanceId, String displayName, float velocity) {
-    this(instanceId, displayName, velocity, false);
-  }
-
-  public PerformanceObject(int instanceId, String displayName, float velocity, boolean isActive) {
-    this.createdAt = System.currentTimeMillis(); // Final field assigned here
-    this.instanceId = instanceId;
-    this.displayName = displayName;
-    this.velocity = velocity;
-    this.isActive = isActive;
-  }
-
-  public static void sayHello() {
-    System.out.println("Hello, world!");
-  }
-
-  public void logMessage() {
-    logMessage("Default system heartbeat check.");
-  }
-
-  public void logMessage(String msg) {
-    logMessage(msg, 1);
-  }
-
-  public void logMessage(String msg, int level) {
-    System.out.println("[" + level + "] " + msg);
-  }
-
-  protected void processData() {
-    this.checksum = 0x00;
-  }
-
-  private float addNum(float f1, float f2) {
-    return f1 + f2;
-  }
-
-  public String getDisplayName() {
-    return displayName;
-  }
-
-  private static final class InternalConfig {
-    private long timeout;
-    private int bufferSize;
-  }
-
-  public interface StateListener {
-    void onTransition(boolean success);
-  }
-  
-  public enum Priority {
-    LOW,
-    MEDIUM,
-    HIGH
-  }
-}
-```
-
-### Architecture and scope
-
-- `flixelgdx-core` is the main surface typical game code uses. Keep backend or platform quirks out of core; abstract with 
-  interfaces where behavior differs per platform.
-- Keep changes minimal: avoid unrelated files unless needed for the stated task.
-- When working in the HTML5 / `flixelgdx-html5` platform, do not write JavaScript- or WebAssembly-specific code. The
-  framework's web platform should be able to support both out of the box.
-
-### Language and style
-
-- Target **Java 17**. Prefer modern features (records, lambdas, modern `switch`) over legacy patterns.
-- **Import** every type you use. Do **not** use star imports (`*`).
-- Do **not** use fully qualified class names inline when a normal import would read cleanly.
-- Empty or void-returning methods: opening brace on the same line per `.editorconfig` (example: `public void hook() {}`).
-- Prefer **short** field and method names. If shortening a method name hides its meaning, use a concise name plus Javadoc instead of a long identifier.
-
-### Finishing work
-
-Summarize edits in plain language: what changed, why, and how it fits the system.
-
-Before considering a coding task finished, run **unit tests**, **spotless apply (for formatting)**, **checkstyle 
-(for code quality)**, and **Javadoc lint**; fix failures. **All** unit tests live in the `flixelgdx-test` module, not 
-scattered around multiple modules.
-
-Additionally, if you are currently on a branch for a pull request, always update the description of the PR to ensure accuracy
-after completing a task.
+Do not use deprecated FlixelGDX or Kotlin APIs. If a deprecated API is already in use in the file you are
+editing, replace it with the recommended alternative.
 
 ---
 
-## Documentation, comments, and Javadoc
+## Coding style
 
-Documentation should read like a **beginner-friendly handbook**, not an expert-only manual.
+### Kotlin
 
-### Mechanics
+- All source is formatted with **ktfmt** (Google style, 2-space indentation). Run
+  `./gradlew spotlessApply` before committing. CI rejects unformatted code.
+- Target **Kotlin 2.0** language and API version. Do not use features introduced after that version.
+- Target **Java 17** bytecode via the JVM toolchain.
+- Use `@Suppress` sparingly. If detekt flags something, fix it or add a brief comment explaining why
+  the suppression is warranted.
+- Prefer `inline` for extension functions that accept lambdas unless there is a specific reason not to.
+- Use `operator fun` for operator overloads; use `infix fun` only when the infix form reads clearly.
+- Prefer short, focused files grouped by the framework area they extend (for example, all `FlixelArray`
+  extensions in `FlixelArrays.kt`).
 
-- Use correct grammar and punctuation everywhere (comments, `@param`, `@return`, `@throws`, and so on).
-- Stick to **ASCII** in prose when practical; avoid decorative punctuation like en dash, em dash, fancy arrows, or emojis. This applies
-  to both source comments and Javadoc. Use a plain hyphen (-) only for compound adjectives; never use it as a sentence separator or
-  stand-in for an em dash. This rule also applies to inline comments in build scripts. This allows the docs to be read easily
-  on every device and requires you to use clarity over brevity. The Markdown docs are the only exception to this rule.
-- Use **consistent capitalization and grammar** in prose and code.
-- Every doc comment should always start with a single sentence, with detailed paragraphs following.
-- Include the right Javadoc tags (`@param`, `@return`, `@throws`, ...) wherever they apply.
-- Use nullability annotations (`@Nullable`, `@NotNull`) where they help tooling.
-- Keep `@link` references valid or fix broken links.
-- Follow `.editorconfig` for formatting.
-- Add comments where either complexity would otherwise be hard to follow, or where code requires import context.
-- Skip Javadoc on trivial, self-explanatory methods (such as plain getters/setters) unless there is subtle behavior.
-- All source files should carry the project's standard copyright header (exceptions: `package-info.java`, `module-info.java` and build scripts).
-- Use **American English** in docs. (e.g., "behavior" instead of "behaviour")
-- After code changes that affect public behavior or APIs, **update relevant Markdown docs** in the repo.
-- Don't use section comments (like `// ---`). The code should be easily navigable simply by how it's organized; section comments are just noise.
-- If a class needs to be referenced in a `@link`, don't write out the full package: import it as a qualifier. This allows the framework's Javadoc links to be
-  easy to read and not a blue mess. (Example: **not** `{@link org.flixelgdx.Flixel}`, just `{@link Flixel}` + `import` for qualifier if needed.)
+### KDoc
 
-### Comments versus Javadocs
+- Every public extension function, property, or class that is part of the API needs a KDoc comment.
+- Start with a single summary sentence, followed by more detail in separate paragraphs when needed.
+- Include `@param`, `@return`, and `@throws` tags wherever they apply.
+- Reference other types with `[TypeName]` rather than fully qualified names.
+- Skip KDoc on trivial one-liners where the name makes the behavior completely obvious.
+- Use correct grammar and punctuation. Use **American English**.
+- Avoid decorative ASCII art, en dashes, em dashes, emojis, or other non-standard punctuation in prose.
+  Use a plain hyphen only for compound adjectives.
+- Do not use section comments (like `// ---`). Organize code by structure, not by comment banners.
 
-- For single-line comments, do **not** use Markdown tricks (bold with `**`, backticks around snippets, etc.). Reserve richer formatting for Javadoc.
-- When naming methods inside comments, include parentheses (`someMethod()`). If parameters exist, but you are not spelling them out, use `anotherMethod(...)`. Example class-qualified form: `SomeClass.someMethod(...)`.
+---
 
-### Heavily used or critical APIs
+## Architecture and scope
 
-For widely used classes, fields, methods, or anything central to correctness, include a **small usage example** with an analogy in Javadoc showing correct typical use.
+- This extension is a **wrapper layer** only. Do not add new framework behavior; that belongs in
+  [flixelgdx-core](https://github.com/flixelgdx/flixelgdx).
+- Keep changes minimal. Avoid touching unrelated files unless strictly necessary for the stated task.
+- The convention plugin in `build-logic/` applies to every module. Changes there affect the whole project.
+
+---
+
+## Finishing work
+
+Before considering a coding task finished:
+
+1. Run the unit tests: `./gradlew :flixelgdx-ktx-core:test :flixelgdx-ktx-async:test`
+2. Apply formatting: `./gradlew spotlessApply`
+3. Run static analysis: `./gradlew detekt`
+4. Verify KDoc builds: `./gradlew dokkaHtml`
+
+Fix any failures before considering the task complete.
+
+If you are currently on a branch for a pull request, always update the PR description to reflect your
+changes after completing a task.
+
+Summarize edits in plain language: what changed, why, and how it fits the extension.
 
 ---
 
 ## Working with Git and Pull Requests
 
-- Prefer **small, focused commits** as you finish logical slices of work so history stays readable. For example, if the task
-  involves a large refactor, **don't dump everything in one commit**; split each logical change into a separate commit.
-- Use **one branch and one pull request** unless the user explicitly asks for more (for example, stacked features or dependent work).
+- Prefer **small, focused commits** as you finish logical slices of work so history stays readable.
+- Use **one branch and one pull request** unless the user explicitly asks for more.
 - If the user renames a pull request, **do not rename it back**; respect their title.
-- Your commit titles should be **short and descriptive**, not exceeding **72 characters**, and should not contain
-  **keywords in front (e.g. `fix`, `feat`, `refactor`, etc.)**. They should also be **present** tense. Examples:
-    - "Update README with more descriptive content"
-    - "Fix typos in documentation and refactor FlixelSprite"
-    - "Fix rendering bug in FlixelCamera"
-    - "Add missing Javadoc to FlixelCamera"
-- Always pull the latest changes before changing any code if on a branch outside of the `master` branch.
-- If the current branch is set to `master` or something else, **create a new branch off of the latest changes from `master`**.
-- When you're done with a task (and you haven't yet made one), **create a pull request**. Make sure it follows the [PR template](.github/PULL_REQUEST_TEMPLATE.md)
-  exactly with all of your changes.
-- Pull request titles should be read as **past tense**, in the format as if it was a new update to a game. Examples:
-    - "Added experimental gamepad support for games to be playable on more platforms such as console"
-    - "Enhanced the desktop backend with multiple new features, such as transparent window backgrounds, custom mouse icons, and more"
-    - "Reworked the logging API and its stack trace system to be much more accurate using a custom logging plugin"
-- All pull requests should target the **`master`** branch.
-- If the user has changes present on the current branch, **do not undo, modify or touch them**. Leave them as-is.
+- Commit titles must be **short and descriptive** (72 characters maximum), **present tense**, and must
+  not start with type keywords like `fix:`, `feat:`, or `refactor:`. Examples:
+    - "Add operator overloads for FlixelRect"
+    - "Fix allocation in tween DSL builder"
+    - "Add missing KDoc to FlixelArrays"
+- Always pull the latest changes before editing code if on a branch outside of `master`.
+- If the current branch is `master`, **create a new branch** off the latest `master` before making changes.
+- When you are done with a task (and you have not yet made one), **create a pull request** following the
+  [PR template](.github/PULL_REQUEST_TEMPLATE.md) exactly.
+- Pull request titles should read as **past tense**, written as if announcing a new update. Examples:
+    - "Added Kotlin operator sugar for FlixelGroup to make managing game objects more concise"
+    - "Extended the tween DSL with a chained sequence builder for cleaner multi-step animations"
+    - "Added coroutine-based signal awaiting to the async module"
+- All pull requests must target the **`master`** branch.
+- If the user has changes present on the current branch, **do not undo, modify, or touch them**.

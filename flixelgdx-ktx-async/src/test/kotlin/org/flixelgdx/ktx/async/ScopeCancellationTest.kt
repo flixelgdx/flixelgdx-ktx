@@ -38,8 +38,8 @@ import org.flixelgdx.util.signal.FlixelSignalData.StateSwitchSignalData
  * Tests that scope children are cancelled when [Flixel.Signals.preStateSwitch] fires, and that the
  * scope itself stays alive for reuse.
  *
- * NOTE: [installFlixelCoroutines] subscribes to [Flixel.Signals.preStateSwitch], a static
- * global. To keep this test isolated from global state, it drives scope cancellation directly via
+ * NOTE: [installFlixelCoroutines] subscribes to [Flixel.Signals.preStateSwitch], a static global.
+ * To keep this test isolated from global state, it drives scope cancellation directly via
  * [cancelChildren], which is the same call [installFlixelCoroutines] makes. This avoids spinning up
  * [Flixel] in a headless environment while still verifying the wiring logic.
  */

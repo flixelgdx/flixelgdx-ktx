@@ -31,10 +31,10 @@ import org.flixelgdx.util.timer.FlixelTimer
 /**
  * Suspends the current coroutine for the given number of in-game seconds.
  *
- * The delay is backed by a [FlixelTimer] on the global timer manager. If the coroutine is
- * cancelled while the delay is running, the timer is cancelled via [FlixelTimer.cancel] so it does
- * not fire a stale callback. Time is scaled by [Flixel.timeScale] (because the timer manager
- * respects it), so pausing or slowing down the game also affects this delay.
+ * The delay is backed by a [FlixelTimer] on the global timer manager. If the coroutine is cancelled
+ * while the delay is running, the timer is cancelled via [FlixelTimer.cancel] so it does not fire a
+ * stale callback. Time is scaled by [Flixel.timeScale] (because the timer manager respects it), so
+ * pausing or slowing down the game also affects this delay.
  *
  * Example:
  * ```

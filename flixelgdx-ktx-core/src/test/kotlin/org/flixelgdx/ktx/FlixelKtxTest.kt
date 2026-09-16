@@ -23,12 +23,12 @@
  */
 package org.flixelgdx.ktx
 
+import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
 import org.flixelgdx.collections.FlixelArray
 import org.flixelgdx.collections.FlixelMap
 import org.flixelgdx.functional.FlixelDestroyable
-import org.flixelgdx.ktx.collections.plusAssign
-import org.flixelgdx.ktx.collections.minusAssign
 import org.flixelgdx.ktx.collections.contains
 import org.flixelgdx.ktx.collections.flixelArrayOf
 import org.flixelgdx.ktx.collections.flixelIntArrayOf
@@ -37,19 +37,20 @@ import org.flixelgdx.ktx.collections.flixelSetOf
 import org.flixelgdx.ktx.collections.indices
 import org.flixelgdx.ktx.collections.isNotEmpty
 import org.flixelgdx.ktx.collections.lastIndex
+import org.flixelgdx.ktx.collections.minusAssign
+import org.flixelgdx.ktx.collections.plusAssign
 import org.flixelgdx.ktx.collections.set
+import org.flixelgdx.ktx.functional.use
 import org.flixelgdx.ktx.math.component1
 import org.flixelgdx.ktx.math.component2
 import org.flixelgdx.ktx.math.component3
 import org.flixelgdx.ktx.math.component4
 import org.flixelgdx.ktx.math.minus
+import org.flixelgdx.ktx.math.pick
 import org.flixelgdx.ktx.math.plus
 import org.flixelgdx.ktx.math.plusAssign
 import org.flixelgdx.ktx.math.range
 import org.flixelgdx.ktx.math.times
-import org.flixelgdx.math.FlixelRandom
-import org.flixelgdx.math.FlixelRect
-import org.flixelgdx.math.FlixelVector
 import org.flixelgdx.ktx.util.component1
 import org.flixelgdx.ktx.util.component2
 import org.flixelgdx.ktx.util.component3
@@ -58,12 +59,13 @@ import org.flixelgdx.ktx.util.hsv
 import org.flixelgdx.ktx.util.lerp
 import org.flixelgdx.ktx.util.rgba
 import org.flixelgdx.ktx.util.toFlixelColor
+import org.flixelgdx.math.FlixelRandom
+import org.flixelgdx.math.FlixelRect
+import org.flixelgdx.math.FlixelVector
 import org.flixelgdx.util.FlixelColor
 import org.flixelgdx.util.save.FlixelSave
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
 
 /**
  * Headless unit tests for the FlixelGDX Kotlin extension.

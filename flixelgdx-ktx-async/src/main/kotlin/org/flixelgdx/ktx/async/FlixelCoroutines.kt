@@ -38,15 +38,14 @@ import org.flixelgdx.collections.FlixelArray
  *
  * Safety model: all coroutines dispatched here execute on the same thread that drives the game
  * loop. Each suspension point slices execution between frames. A coroutine that never suspends will
- * freeze the entire frame, so always use [delay] or other suspension points for long-running
- * work. Launch new coroutines once per game sequence (for example inside a state's `create()`
- * method) rather than every frame; each [launch] allocates a coroutine object.
+ * freeze the entire frame, so always use [delay] or other suspension points for long-running work.
+ * Launch new coroutines once per game sequence (for example inside a state's `create()` method)
+ * rather than every frame; each [launch] allocates a coroutine object.
  *
- * The scope is shared per [scope] and auto-cancels its children when a state switch fires,
- * keeping the scope itself alive for reuse in the next state.
+ * The scope is shared per [scope] and auto-cancels its children when a state switch fires, keeping
+ * the scope itself alive for reuse in the next state.
  *
  * Example - a simple timed sequence started once in create():
- *
  * ```
  * installFlixelCoroutines()
  * launch {
@@ -60,14 +59,10 @@ object Dispatcher : CoroutineDispatcher() {
 
   private val queue: FlixelArray<Runnable> = FlixelArray()
 
-  /**
-   * Blocks queued during a drain are held here so they start next frame.
-   */
+  /** Blocks queued during a drain are held here so they start next frame. */
   private val nextQueue: FlixelArray<Runnable> = FlixelArray()
 
-  /**
-   * True while drain() is executing, so newly dispatched blocks go to nextQueue.
-   */
+  /** True while drain() is executing, so newly dispatched blocks go to nextQueue. */
   private var draining: Boolean = false
 
   override fun dispatch(context: CoroutineContext, block: Runnable) {
@@ -81,9 +76,9 @@ object Dispatcher : CoroutineDispatcher() {
   /**
    * Drains all queued continuations, running each one exactly once.
    *
-   * This is called automatically each frame when [installFlixelCoroutines] has been called.
-   * Blocks enqueued during the drain run on the next frame to prevent re-entrancy from executing in
-   * the same drain pass.
+   * This is called automatically each frame when [installFlixelCoroutines] has been called. Blocks
+   * enqueued during the drain run on the next frame to prevent re-entrancy from executing in the
+   * same drain pass.
    */
   fun update() {
     if (queue.size == 0) {
@@ -111,9 +106,9 @@ object Dispatcher : CoroutineDispatcher() {
 /**
  * The shared [CoroutineScope] for all game-thread coroutines.
  *
- * Built on [Dispatcher] with a [SupervisorJob] so individual child failures do not cancel
- * other siblings. Children are canceled on each state switch (via [installFlixelCoroutines]) so
- * the scope itself remains reusable across states.
+ * Built on [Dispatcher] with a [SupervisorJob] so individual child failures do not cancel other
+ * siblings. Children are canceled on each state switch (via [installFlixelCoroutines]) so the scope
+ * itself remains reusable across states.
  */
 val scope: CoroutineScope = CoroutineScope(Dispatcher + SupervisorJob())
 
@@ -122,11 +117,10 @@ private var installed: Boolean = false
 /**
  * Wires [Dispatcher] into the game loop exactly once.
  *
- * Subscribes [Dispatcher.update] to [Flixel.Signals.postUpdate] so that queued
- * continuations are pumped every frame. Also subscribes to [Flixel.Signals.preStateSwitch] to
- * cancel all children of [scope], preventing coroutines from leaking across states. The scope
- * itself is not canceled, so new coroutines can be launched in the next state without calling this
- * function again.
+ * Subscribes [Dispatcher.update] to [Flixel.Signals.postUpdate] so that queued continuations are
+ * pumped every frame. Also subscribes to [Flixel.Signals.preStateSwitch] to cancel all children of
+ * [scope], preventing coroutines from leaking across states. The scope itself is not canceled, so
+ * new coroutines can be launched in the next state without calling this function again.
  *
  * Calling this more than once is safe; subsequent calls are no-ops.
  */
@@ -135,20 +129,16 @@ fun installFlixelCoroutines() {
     return
   }
   installed = true
-  Flixel.Signals.postUpdate.add {
-    Dispatcher.update()
-  }
-  Flixel.Signals.preStateSwitch.add {
-    scope.coroutineContext.cancelChildren()
-  }
+  Flixel.Signals.postUpdate.add { Dispatcher.update() }
+  Flixel.Signals.preStateSwitch.add { scope.coroutineContext.cancelChildren() }
 }
 
 /**
  * Launches a new coroutine in [scope] that runs on the game thread.
  *
- * This is a convenience wrapper for [CoroutineScope.launch] on [scope]. Do not call this
- * per-frame; each invocation allocates a new coroutine object. Launch sequences once (for example
- * inside a state's `create()` method) and let suspension points slice work across frames.
+ * This is a convenience wrapper for [CoroutineScope.launch] on [scope]. Do not call this per-frame;
+ * each invocation allocates a new coroutine object. Launch sequences once (for example inside a
+ * state's `create()` method) and let suspension points slice work across frames.
  *
  * @param block The coroutine body to execute.
  * @return The [Job] representing the launched coroutine.

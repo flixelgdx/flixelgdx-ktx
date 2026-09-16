@@ -36,9 +36,9 @@ import org.flixelgdx.util.signal.FlixelSignal
  * Suspends the current coroutine until this tween completes its final cycle.
  *
  * Registration is done via [FlixelTween.then], which fires after the tween's own `onComplete`
- * callback and therefore does not displace any callback already set on [FlixelTweenSettings].
- * If the coroutine is canceled before the tween finishes, the suspension is abandoned but the
- * tween itself continues to run - cancel the tween separately if that behavior is needed.
+ * callback and therefore does not displace any callback already set on [FlixelTweenSettings]. If
+ * the coroutine is canceled before the tween finishes, the suspension is abandoned but the tween
+ * itself continues to run - cancel the tween separately if that behavior is needed.
  *
  * Note that `then` does not fire for [FlixelTweenType.LOOPING] or [FlixelTweenType.PINGPONG]
  * tweens, so this function will suspend indefinitely when called on those types.
@@ -99,9 +99,9 @@ suspend fun <T> FlixelSignal<T>.awaitOnce(): T = suspendCancellableCoroutine { c
  * for the next matching finish event. The coroutine resumes with the
  * [FlixelAnimationFrameSignalData] carrying the final frame information.
  *
- * If the coroutine is canceled, the listener remains registered until the named animation
- * finishes, at which point it silently discards the result. This is an unavoidable limitation
- * because [FlixelSignal] does not expose a way to remove a one-time handler after the fact. Call
+ * If the coroutine is canceled, the listener remains registered until the named animation finishes,
+ * at which point it silently discards the result. This is an unavoidable limitation because
+ * [FlixelSignal] does not expose a way to remove a one-time handler after the fact. Call
  * [FlixelAnimationController.onAnimationFinished]'s `remove(...)` with the same handler reference
  * if early removal is needed (not supported by this convenience wrapper).
  *

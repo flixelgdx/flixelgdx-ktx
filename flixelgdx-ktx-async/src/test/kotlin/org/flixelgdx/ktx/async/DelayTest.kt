@@ -43,9 +43,9 @@ import org.flixelgdx.util.timer.FlixelTimerManager
 /**
  * Tests for [delay] coroutine plumbing.
  *
- * NOTE: [delay] internally creates a [FlixelTimer] on the global [FlixelTimerManager]. The
- * timer manager extends [FlixelBasic] and depends on [FlixelBatch] and the full game loop, so it
- * cannot be driven headlessly in unit tests. These tests therefore exercise the coroutine
+ * NOTE: [delay] internally creates a [FlixelTimer] on the global [FlixelTimerManager]. The timer
+ * manager extends [FlixelBasic] and depends on [FlixelBatch] and the full game loop, so it cannot
+ * be driven headlessly in unit tests. These tests therefore exercise the coroutine
  * continuation-resume wiring directly: they capture the continuation that
  * [suspendCancellableCoroutine] produces and fire it manually, verifying that the code after
  * [delay] runs only after the resume and that cancellation is honored.
@@ -59,9 +59,8 @@ class DelayTest {
    * Verifies that a coroutine suspended at a suspension point does not advance until explicitly
    * resumed.
    *
-   * Uses a plain [suspendCoroutine] (not [delay] directly, because the real [FlixelTimer]
-   * cannot run headlessly). This exercises the same continuation-dispatch path that [delay]
-   * relies on.
+   * Uses a plain [suspendCoroutine] (not [delay] directly, because the real [FlixelTimer] cannot
+   * run headlessly). This exercises the same continuation-dispatch path that [delay] relies on.
    */
   @Test
   fun continuationResumesOnlyWhenExplicitlyResumed() {

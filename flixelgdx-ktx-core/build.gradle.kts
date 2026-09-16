@@ -1,6 +1,4 @@
-plugins {
-  id("flixelgdx.kotlin-library")
-}
+plugins { id("flixelgdx.kotlin-library") }
 
 dependencies {
   api(libs.flixelgdx.core)
