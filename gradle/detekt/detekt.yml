@@ -1,0 +1,83 @@
+# detekt configuration for FlixelGDX KTX.
+# Mirrors the role of Checkstyle in the base framework: enforces KDoc on all public API
+# and applies sensible style defaults. This file extends the detekt built-in defaults
+# (buildUponDefaultConfig = true in the convention plugin), so only deviations need listing here.
+
+comments:
+  active: true
+  # Require KDoc on every public class, object, and interface.
+  UndocumentedPublicClass:
+    active: true
+    excludes: ["**/test/**", "**/Test*.kt", "**/*Test.kt"]
+  # Require KDoc on every public function.
+  UndocumentedPublicFunction:
+    active: true
+    excludes: ["**/test/**", "**/Test*.kt", "**/*Test.kt"]
+  # Require KDoc on every public property.
+  UndocumentedPublicProperty:
+    active: true
+    excludes: ["**/test/**", "**/Test*.kt", "**/*Test.kt"]
+  # Discourage block comments in favor of KDoc or end-of-line comments.
+  CommentOverPrivateFunction:
+    active: false
+  CommentOverPrivateProperty:
+    active: false
+
+complexity:
+  active: true
+  # Reasonable ceiling for cyclomatic complexity in extension functions.
+  CyclomaticComplexMethod:
+    threshold: 15
+  LongMethod:
+    threshold: 60
+  # DSL builders (for example the tween builder) legitimately expose many named,
+  # defaulted parameters so a call reads top to bottom.
+  LongParameterList:
+    functionThreshold: 12
+    constructorThreshold: 8
+  # The primitive-typed sugar files carry one family of extensions per primitive type,
+  # so a single file legitimately holds dozens of top-level functions.
+  TooManyFunctions:
+    thresholdInFiles: 60
+    thresholdInClasses: 20
+
+naming:
+  active: true
+  # Utility files use @file:JvmName and hold several related top-level declarations,
+  # so the file name intentionally does not match a single declaration.
+  MatchingDeclarationName:
+    active: false
+
+style:
+  active: true
+  # Kotlin extension libraries should prefer expression bodies where they fit.
+  UseCheckOrError:
+    active: true
+  UnusedImports:
+    active: true
+  # FlixelRect and FlixelColor destructure into four components (x, y, w, h) / (r, g, b, a).
+  DestructuringDeclarationWithTooManyEntries:
+    maxDestructuringEntries: 4
+  # Coroutines-heavy code sometimes needs suppression; keep the rule on but lenient.
+  ReturnCount:
+    max: 4
+
+empty-blocks:
+  active: true
+  # Empty overrides are a legitimate no-op, especially in test fakes.
+  EmptyFunctionBlock:
+    ignoreOverridden: true
+
+exceptions:
+  active: true
+  # Swallowing exceptions silently is always a bug.
+  SwallowedException:
+    active: true
+  TooGenericExceptionCaught:
+    active: true
+    exceptionNames:
+      - Error
+      - Exception
+      - RuntimeException
+      - Throwable
+    allowedExceptionNameRegex: "_|(ignore|expected).*"
