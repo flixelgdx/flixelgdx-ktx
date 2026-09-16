@@ -24,11 +24,9 @@
 package org.flixelgdx.ktx
 
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import org.flixelgdx.collections.FlixelArray
 import org.flixelgdx.collections.FlixelMap
-import org.flixelgdx.functional.FlixelDestroyable
 import org.flixelgdx.ktx.collections.contains
 import org.flixelgdx.ktx.collections.flixelArrayOf
 import org.flixelgdx.ktx.collections.flixelIntArrayOf
