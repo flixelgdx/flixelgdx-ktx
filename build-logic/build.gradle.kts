@@ -19,5 +19,5 @@ dependencies {
   implementation("com.diffplug.spotless:spotless-plugin-gradle:6.25.0")
   implementation("com.vanniktech:gradle-maven-publish-plugin:0.29.0")
   implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.7")
-  implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.9.20")
+  implementation("org.jetbrains.dokka:dokka-gradle-plugin:2.2.0")
 }
