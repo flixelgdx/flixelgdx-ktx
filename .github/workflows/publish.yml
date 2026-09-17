@@ -8,6 +8,32 @@ on:
       - 'v*'
 
 jobs:
+  validate:
+    name: Validate before publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17 (Temurin)
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: 'gradle'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Check formatting
+        run: ./gradlew spotlessCheck --no-daemon --warning-mode all
+
+      - name: Run static analysis
+        run: ./gradlew detekt --no-daemon --warning-mode all
+
+      - name: Run unit tests
+        run: ./gradlew :flixelgdx-ktx-core:test :flixelgdx-ktx-async:test --no-daemon --warning-mode all
+
   publish:
     name: Publish artifacts
     runs-on: ubuntu-latest
