@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up JDK 17 (Temurin)
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 17
@@ -41,7 +41,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up JDK 17 (Temurin)
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 17
@@ -61,8 +61,7 @@ jobs:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_PASSWORD }}
         run: |
-          VERSION=${GITHUB_REF_NAME#v}
           ./gradlew publishAllPublicationsToMavenCentralRepository \
-            -PprojectVersion=$VERSION \
+            -PincludeAndroid=true \
             --no-daemon \
             --warning-mode all
