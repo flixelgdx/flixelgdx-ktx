@@ -8,30 +8,6 @@ on:
       - 'v*'
 
 jobs:
-  # Run the same checks CI normally runs on branch pushes before we publish anything.
-  validate:
-    name: Pre-publish validation
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 17 (Temurin)
-        uses: actions/setup-java@v5
-        with:
-          distribution: temurin
-          java-version: 17
-          cache: 'gradle'
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      - name: Check formatting (Spotless)
-        run: ./gradlew spotlessCheck --no-daemon --warning-mode all
-
-      - name: Run unit tests
-        run: ./gradlew :flixelgdx-ktx-core:test :flixelgdx-ktx-async:test --no-daemon --warning-mode all
-
   publish:
     name: Publish artifacts
     runs-on: ubuntu-latest
@@ -51,9 +27,6 @@ jobs:
         run: chmod +x gradlew
 
       - name: Publish to Maven Central
-        # Secrets are injected as Gradle project properties via the ORG_GRADLE_PROJECT_ prefix.
-        # signingInMemoryKey is the ASCII-armored GPG private key (supports newlines safely as an env var).
-        # The artifact version is derived from the git tag: v1.2.3 -> 1.2.3.
         env:
           ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
@@ -62,6 +35,5 @@ jobs:
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_PASSWORD }}
         run: |
           ./gradlew publishAllPublicationsToMavenCentralRepository \
-            -PincludeAndroid=true \
             --no-daemon \
             --warning-mode all
