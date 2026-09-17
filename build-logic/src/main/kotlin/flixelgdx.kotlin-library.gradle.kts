@@ -1,3 +1,4 @@
+import com.vanniktech.maven.publish.SonatypeHost
 import io.gitlab.arturbosch.detekt.Detekt
 
 /**
@@ -92,7 +93,7 @@ tasks.matching { it.name.startsWith("generateMetadataFileFor") }.configureEach {
 }
 
 mavenPublishing {
-  publishToMavenCentral()
+  publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
 
   val hasSigning = findProperty("flixel.signing.enabled")?.toString() == "true"
     || findProperty("signing.keyId") != null
