@@ -103,6 +103,66 @@ override fun create() {
 }
 ```
 
+### UI toolkit
+
+If your game uses [FlixelGDX UI](https://github.com/flixelgdx/flixelgdx-ui), the `flixelgdx-ktx-ui` module lets the
+shape of your code match the shape of your menus.
+
+```kotlin
+// Declare your looks once.
+val skin = uiSkin {
+  button {
+    up = track(nineSlice(Flixel.files.internal("ui/button.png"), all = 6)) 
+  }
+  button("danger") {
+    up = track(colorFill(0xAA2222FF))
+  }
+  label("title") {
+    fontSize = 32
+  }
+}
+
+// Then build the UI as a tree. Each widget is added to the block it is written in.
+ui = uiDisplay(FlixelUiDisplay.createHudCamera(), skin) {
+  vstack(spacing = 8f) {
+    anchor(FlixelAlign.CENTER)
+    label("Main Menu", style = "title")
+    button("Play", tooltip = "Start a new run") {
+      onClick {
+        startGame()
+      }
+    }
+    checkbox("Fullscreen").bind(settings::fullscreen) // Two-way binding, works with save().
+    dropdown(160f) {
+      items("Low", "Medium", "High") 
+    }.bind(settings::quality)
+    button("Quit", style = "danger") {
+      onClick {
+        confirmQuit()
+      }
+    }
+  }
+}
+```
+
+With `flixelgdx-ktx-ui-async`, a dialog is just a function that returns the player's answer:
+
+```kotlin
+fun confirmQuit() = launch {
+  val quit = ui.dialog(300f, 160f, dismissed = false) { finish ->
+    label("Really quit?")
+    hstack(spacing = 8f) {
+      button("Yes") { onClick { finish(true) } }
+      button("No") { onClick { finish(false) } }
+    }
+  }
+  if (quit) Flixel.quit()
+}
+```
+
+Just like the UI extension itself, none of this reads input: your game still decides when a widget is hovered or
+clicked (the UI extension's `FlixelUiPointer` makes that a few lines).
+
 ---
 
 ## How do I install it?
@@ -113,11 +173,13 @@ It's as easy as adding a few lines to your build script or configuration file.
 
 ```toml
 [versions]
-flixelgdx-ktx = "0.6.2"
+flixelgdx-ktx = "<flixelgdx-version>"
 
 [libraries]
 flixelgdx-ktx-core = { module = "org.flixelgdx:flixelgdx-ktx-core", version.ref = "flixelgdx-ktx" }
 flixelgdx-ktx-async = { module = "org.flixelgdx:flixelgdx-ktx-async", version.ref = "flixelgdx-ktx" }
+flixelgdx-ktx-ui = { module = "org.flixelgdx:flixelgdx-ktx-ui", version.ref = "flixelgdx-ktx" }
+flixelgdx-ktx-ui-async = { module = "org.flixelgdx:flixelgdx-ktx-ui-async", version.ref = "flixelgdx-ktx" }
 ```
 
 ```kotlin
@@ -125,6 +187,8 @@ flixelgdx-ktx-async = { module = "org.flixelgdx:flixelgdx-ktx-async", version.re
 dependencies {
   implementation(libs.flixelgdx.ktx.core)
   implementation(libs.flixelgdx.ktx.async) // If you want to use coroutines.
+  implementation(libs.flixelgdx.ktx.ui) // If you use FlixelGDX UI.
+  implementation(libs.flixelgdx.ktx.ui.async) // If you use FlixelGDX UI with coroutines.
 }
 ```
 
@@ -138,8 +202,10 @@ repositories {
 
 // In your game's core build.gradle.kts script:
 dependencies {
-  implementation("org.flixelgdx:flixelgdx-ktx-core:0.6.2")
-  implementation("org.flixelgdx:flixelgdx-ktx-async:0.6.2")  // If you want to use coroutines.
+  implementation("org.flixelgdx:flixelgdx-ktx-core:<flixelgdx-version>")
+  implementation("org.flixelgdx:flixelgdx-ktx-async:<flixelgdx-version>")  // If you want to use coroutines.
+  implementation("org.flixelgdx:flixelgdx-ktx-ui:<flixelgdx-version>")  // If you use FlixelGDX UI.
+  implementation("org.flixelgdx:flixelgdx-ktx-ui-async:<flixelgdx-version>")  // If you use FlixelGDX UI with coroutines.
 }
 ```
 
@@ -149,14 +215,21 @@ dependencies {
 <dependency>
     <groupId>org.flixelgdx</groupId>
     <artifactId>flixelgdx-ktx-core</artifactId>
-    <version>0.6.2</version>
+    <version>FLIXELGDX-VERSION</version>
 </dependency>
 
 <!-- If you want to use coroutines. -->
 <dependency>
     <groupId>org.flixelgdx</groupId>
     <artifactId>flixelgdx-ktx-async</artifactId>
-    <version>0.6.2</version>
+    <version>FLIXELGDX-VERSION</version>
+</dependency>
+
+<!-- If you use FlixelGDX UI (and flixelgdx-ktx-ui-async for UI with coroutines). -->
+<dependency>
+    <groupId>org.flixelgdx</groupId>
+    <artifactId>flixelgdx-ktx-ui</artifactId>
+    <version>FLIXELGDX-VERSION</version>
 </dependency>
 ```
 
