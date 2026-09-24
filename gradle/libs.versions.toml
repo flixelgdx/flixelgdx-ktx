@@ -4,6 +4,7 @@
 [versions]
 detekt = "1.23.7"
 dokka = "1.9.20"
+flixelgdx = "0.6.4"
 junit = "5.10.3"
 kotlin = "2.2.0"
 kotlinxCoroutines = "1.8.1"
@@ -13,7 +14,9 @@ vanniktech = "0.29.0"
 [libraries]
 detekt-gradle-plugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 dokka-gradle-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
-flixelgdx-core = { module = "org.flixelgdx:flixelgdx-core", version = "0.6.1" }
+flixelgdx-core = { module = "org.flixelgdx:flixelgdx-core", version.ref = "flixelgdx" }
+flixelgdx-jvm = { module = "org.flixelgdx:flixelgdx-jvm", version.ref = "flixelgdx" }
+flixelgdx-ui = { module = "org.flixelgdx:flixelgdx-ui", version.ref = "flixelgdx" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
