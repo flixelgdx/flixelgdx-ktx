@@ -4,7 +4,7 @@
 
   [![Maven Central](https://img.shields.io/maven-central/v/org.flixelgdx/flixelgdx-ktx-core)](https://central.sonatype.com/artifact/org.flixelgdx/flixelgdx-ktx-core)
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-  [![FlixelGDX 0.6.2](https://img.shields.io/badge/FlixelGDX-0.6.2-red)](https://kotlinlang.org/)
+  [![FlixelGDX 0.6.4](https://img.shields.io/badge/FlixelGDX-0.6.4-red)](https://kotlinlang.org/)
   [![Kotlin 2.0+](https://img.shields.io/badge/Kotlin-2.0%2B-blue)](https://kotlinlang.org/)
   [![Java 17+](https://img.shields.io/badge/Java-17%2B-orange)](https://adoptium.net/temurin/releases?version=17)
 
