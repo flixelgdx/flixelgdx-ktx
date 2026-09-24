@@ -73,7 +73,7 @@ suspend fun <R> FlixelUiDisplay.dialog(
   val modal = FlixelUiModal(width, height)
   modal.destroyOnClose = true
   if (style != null) {
-    modal.setStyle(style)
+    modal.styleName = style
   }
   return suspendCancellableCoroutine { cont ->
     var done = false

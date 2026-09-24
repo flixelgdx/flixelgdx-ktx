@@ -84,7 +84,7 @@ class FlixelUiAsyncTest {
       name.submit()
       // Change the values again before the coroutines resume.
       box.setChecked(false, false)
-      name.setText("")
+      name.text = ""
     }
     Dispatcher.update()
     assertEquals(true, checked)

@@ -53,11 +53,20 @@ fun FlixelUiWidget.anchor(align: Int, offsetX: Float = 0f, offsetY: Float = 0f) 
 }
 
 /**
- * Sets the same padding on all four sides of this container's content area.
+ * The padding on all four sides of this container's content area, as one value.
  *
- * @param all Pixels of padding on every side.
+ * Java has no single padding getter, since each side can differ, so this property exists only in
+ * Kotlin. Setting it pads every side equally, like `setPadding(all)`. Reading it returns that
+ * shared value, or [Float.NaN] when the sides differ (read `paddingLeft` and the other sides in
+ * that case).
  */
-fun FlixelUiContainer.padding(all: Float) = setPadding(all)
+var FlixelUiContainer.padding: Float
+  get() {
+    val left = paddingLeft
+    val uniform = left == paddingTop && left == paddingRight && left == paddingBottom
+    return if (uniform) left else Float.NaN
+  }
+  set(value) = setPadding(value)
 
 /**
  * Sets the padding on the left and right sides to [horizontal] and on the top and bottom to

@@ -121,12 +121,8 @@ fun FlixelUiWidget.slideAnchor(
 ): FlixelTween {
   val widget = this
   return tween(duration, ease, onComplete = onComplete) {
-    goal(widget::getAnchorOffsetX, offsetX) {
-      widget.anchor(widget.anchor, it, widget.anchorOffsetY)
-    }
-    goal(widget::getAnchorOffsetY, offsetY) {
-      widget.anchor(widget.anchor, widget.anchorOffsetX, it)
-    }
+    goal(widget::getAnchorOffsetX, offsetX, widget::setAnchorOffsetX)
+    goal(widget::getAnchorOffsetY, offsetY, widget::setAnchorOffsetY)
   }
 }
 

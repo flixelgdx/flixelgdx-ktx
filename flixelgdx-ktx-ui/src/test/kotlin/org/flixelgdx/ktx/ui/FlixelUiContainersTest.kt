@@ -80,8 +80,10 @@ class FlixelUiContainersTest {
     assertEquals(4f, container.paddingTop)
     assertEquals(12f, container.paddingRight)
     assertEquals(4f, container.paddingBottom)
-    container.padding(6f)
+    assertTrue(container.padding.isNaN(), "sides differ")
+    container.padding = 6f
     assertEquals(6f, container.paddingBottom)
+    assertEquals(6f, container.padding)
   }
 
   @Test

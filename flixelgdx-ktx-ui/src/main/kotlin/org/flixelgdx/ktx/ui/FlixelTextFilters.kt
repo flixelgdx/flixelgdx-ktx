@@ -30,11 +30,11 @@ import org.flixelgdx.ui.text.FlixelTextFilter
 /**
  * Combinators for [FlixelTextFilter], so filters can be built from the ready-made ones.
  *
- * A lambda already works as a filter (`setFilter { it.isLetter() }`); these operators combine
- * existing filters instead of rewriting them:
+ * A lambda already works as a filter (`filter = FlixelTextFilter { it.isLetter() }`); these
+ * operators combine existing filters instead of rewriting them:
  * ```kotlin
- * score.setFilter(FlixelTextFilter.DIGITS or acceptChars("-"))
- * name.setFilter(FlixelTextFilter.ALPHANUMERIC and !acceptChars(" "))
+ * score.filter = FlixelTextFilter.DIGITS or acceptChars("-")
+ * name.filter = FlixelTextFilter.ALPHANUMERIC and !acceptChars(" ")
  * ```
  *
  * Each combinator creates one small filter object when it is called, so build filters once (for

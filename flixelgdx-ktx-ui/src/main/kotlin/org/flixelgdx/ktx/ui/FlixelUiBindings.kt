@@ -77,7 +77,7 @@ fun FlixelUiCheckbox.bind(property: KMutableProperty0<Boolean>): FlixelUiCheckbo
  * @return This text box, for chaining.
  */
 fun FlixelTextBox.bind(property: KMutableProperty0<String>): FlixelTextBox {
-  setText(property.get())
+  text = property.get()
   onChange.add { property.set(it.text.toString()) }
   return this
 }
@@ -106,10 +106,7 @@ fun FlixelUiDropdown.bind(property: KMutableProperty0<Int>): FlixelUiDropdown {
  * @return This group, for chaining.
  */
 fun FlixelUiRadioGroup.bind(property: KMutableProperty0<Int>): FlixelUiRadioGroup {
-  val index = property.get()
-  if (index in 0 until count) {
-    select(getRadioAt(index), false)
-  }
+  selectedIndex = property.get()
   onChange.add { property.set(it.selectedIndex) }
   return this
 }

@@ -142,7 +142,7 @@ inline fun FlixelUiDisplay.modal(
   val modal = FlixelUiModal(width, height)
   modal.destroyOnClose = destroyOnClose
   if (style != null) {
-    modal.setStyle(style)
+    modal.styleName = style
   }
   modal.block()
   openModal(modal)
@@ -162,10 +162,10 @@ internal inline fun <W : FlixelUiWidget> FlixelUiContainer.place(
   block: W.() -> Unit,
 ): W {
   if (style != null) {
-    widget.setStyle(style)
+    widget.styleName = style
   }
   if (tooltip != null) {
-    widget.setTooltip(tooltip)
+    widget.tooltip = tooltip
   }
   add(widget)
   widget.block()
