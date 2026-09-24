@@ -9,12 +9,23 @@ It is a **pure syntax layer**: operator overloads, extension functions, property
 that make the Java-based FlixelGDX API feel natural from Kotlin. It contains no runtime logic of its own and
 adds no new framework behavior.
 
-This repository has two published modules:
+This repository has four published modules:
 
 - **`flixelgdx-ktx-core`**: Extensions for collections, tweens, signals, saves, math types, groups, colors,
   and animations.
 - **`flixelgdx-ktx-async`**: Coroutine integration; depends on `flixelgdx-ktx-core` and
   `kotlinx-coroutines-core`.
+- **`flixelgdx-ktx-ui`**: Builder DSL, skin DSL, bindings, and sugar for the
+  [FlixelGDX UI](https://github.com/flixelgdx/flixelgdx-ui) extension; depends on `flixelgdx-ktx-core` and
+  `flixelgdx-ui`.
+- **`flixelgdx-ktx-ui-async`**: Coroutine helpers for UI widgets (awaits and dialogs); depends on
+  `flixelgdx-ktx-ui` and `flixelgdx-ktx-async`.
+
+The UI modules follow the UI extension's own rule: **the UI never reads input.** Do not add helpers that read
+`Flixel.mouse`, `Flixel.keys`, touches, or gamepads on the game's behalf.
+
+When `../flixelgdx` or `../flixelgdx-ui` exist next to this repository, `settings.gradle.kts` includes them as
+composite builds, so the modules compile against those local checkouts.
 
 Runtime verification happens in a **separate game project** that consumes the extension via
 `publishToMavenLocal`, a composite build, or JitPack.
@@ -130,7 +141,7 @@ editing, replace it with the recommended alternative.
 
 Before considering a coding task finished:
 
-1. Run the unit tests: `./gradlew :flixelgdx-ktx-core:test :flixelgdx-ktx-async:test`
+1. Run the unit tests: `./gradlew test`
 2. Apply formatting: `./gradlew spotlessApply`
 3. Run static analysis: `./gradlew detekt`
 4. Verify KDoc builds: `./gradlew dokkaHtml`
