@@ -42,12 +42,12 @@ The project is split into four published modules and one build-only module:
 
 ## Key Files
 
-| Path                                                              | Purpose                                                                |
-|-------------------------------------------------------------------|------------------------------------------------------------------------|
+| Path                                                              | Purpose                                                                                                                                                |
+|-------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `settings.gradle.kts`                                             | Declares the submodules, wires `build-logic`, and includes sibling `../flixelgdx` and `../flixelgdx-ui` checkouts as composite builds when they exist. |
-| `gradle.properties`                                               | JVM flags, `projectVersion`, `groupId`, and Maven POM metadata.        |
-| `gradle/libs.versions.toml`                                       | Version catalog: all dependency and plugin versions in one place.      |
-| `build-logic/src/main/kotlin/flixelgdx.kotlin-library.gradle.kts` | Convention plugin applied to every module.                             |
+| `gradle.properties`                                               | JVM flags, `projectVersion`, `groupId`, and Maven POM metadata.                                                                                        |
+| `gradle/libs.versions.toml`                                       | Version catalog: all dependency and plugin versions in one place.                                                                                      |
+| `build-logic/src/main/kotlin/flixelgdx.kotlin-library.gradle.kts` | Convention plugin applied to every module.                                                                                                             |
 
 ---
 
@@ -57,18 +57,18 @@ FlixelGDX KTX uses **Gradle** with **Kotlin DSL**.
 
 ### Common Tasks
 
-| Task                                  | Description                                                                        |
-|---------------------------------------|------------------------------------------------------------------------------------|
-| `./gradlew :flixelgdx-ktx-core:test`  | Run core module unit tests.                                                        |
-| `./gradlew :flixelgdx-ktx-async:test` | Run async module unit tests.                                                       |
-| `./gradlew :flixelgdx-ktx-ui:test`    | Run UI module unit tests.                                                          |
-| `./gradlew :flixelgdx-ktx-ui-async:test` | Run UI async module unit tests.                                                 |
-| `./gradlew test`                      | Run every module's unit tests.                                                     |
-| `./gradlew spotlessApply`             | Auto-format all Kotlin source with ktfmt (Google style).                           |
-| `./gradlew spotlessCheck`             | Check formatting without modifying files (used in CI).                             |
-| `./gradlew detekt`                    | Run detekt static analysis across all modules.                                     |
-| `./gradlew dokkaHtml`                 | Generate HTML API docs.                                                            |
-| `./gradlew publishToMavenLocal`       | Publish every module to your local Maven repository for testing in a game project. |
+| Task                                     | Description                                                                        |
+|------------------------------------------|------------------------------------------------------------------------------------|
+| `./gradlew :flixelgdx-ktx-core:test`     | Run core module unit tests.                                                        |
+| `./gradlew :flixelgdx-ktx-async:test`    | Run async module unit tests.                                                       |
+| `./gradlew :flixelgdx-ktx-ui:test`       | Run UI module unit tests.                                                          |
+| `./gradlew :flixelgdx-ktx-ui-async:test` | Run UI async module unit tests.                                                    |
+| `./gradlew test`                         | Run every module's unit tests.                                                     |
+| `./gradlew spotlessApply`                | Auto-format all Kotlin source with ktfmt (Google style).                           |
+| `./gradlew spotlessCheck`                | Check formatting without modifying files (used in CI).                             |
+| `./gradlew detekt`                       | Run detekt static analysis across all modules.                                     |
+| `./gradlew dokkaHtml`                    | Generate HTML API docs.                                                            |
+| `./gradlew publishToMavenLocal`          | Publish every module to your local Maven repository for testing in a game project. |
 
 ---
 
