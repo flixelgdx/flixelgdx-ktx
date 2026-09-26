@@ -10,7 +10,7 @@ dependencies {
   api(project(":flixelgdx-ktx-ui"))
   api(project(":flixelgdx-ktx-async"))
 
-  testImplementation(libs.flixelgdx.jvm)
+  testImplementation(libs.flixelgdx.desktop)
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.junit.jupiter)
   testImplementation(libs.kotlin.test)

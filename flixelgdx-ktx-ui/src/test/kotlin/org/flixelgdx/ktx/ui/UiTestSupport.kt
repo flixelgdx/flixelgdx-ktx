@@ -25,7 +25,7 @@ package org.flixelgdx.ktx.ui
 
 import org.flixelgdx.Flixel
 import org.flixelgdx.FlixelCamera
-import org.flixelgdx.backend.jvm.file.FlixelJvmFiles
+import org.flixelgdx.backend.desktop.file.FlixelJvmFiles
 import org.flixelgdx.ui.FlixelUiDisplay
 import org.flixelgdx.ui.skin.FlixelTextBoxStyle
 import org.flixelgdx.ui.skin.FlixelUiButtonStyle
