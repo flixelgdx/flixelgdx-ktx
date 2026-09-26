@@ -9,11 +9,11 @@
 plugins {
   eclipse
   idea
-  id("org.jetbrains.kotlin.jvm") version "2.2.0" apply false
-  id("com.diffplug.spotless") version "6.25.0" apply false
-  id("com.vanniktech.maven.publish") version "0.29.0" apply false
-  id("io.gitlab.arturbosch.detekt") version "1.23.7" apply false
-  id("org.jetbrains.dokka") version "1.9.20" apply false
+  alias(libs.plugins.kotlin.jvm) apply false
+  alias(libs.plugins.spotless) apply false
+  alias(libs.plugins.vanniktech) apply false
+  alias(libs.plugins.detekt) apply false
+  alias(libs.plugins.dokka) apply false
 }
 
 val groupId: String by project
