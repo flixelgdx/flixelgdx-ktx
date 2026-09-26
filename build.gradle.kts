@@ -9,7 +9,7 @@
 plugins {
   eclipse
   idea
-  id("org.jetbrains.kotlin.jvm") version "2.2.0" apply false
+  id("org.jetbrains.kotlin.jvm") version "2.4.20" apply false
   id("com.diffplug.spotless") version "6.25.0" apply false
   id("com.vanniktech.maven.publish") version "0.29.0" apply false
   id("io.gitlab.arturbosch.detekt") version "1.23.7" apply false
