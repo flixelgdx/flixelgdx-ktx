@@ -13,7 +13,7 @@ plugins {
   id("com.diffplug.spotless") version "6.25.0" apply false
   id("com.vanniktech.maven.publish") version "0.29.0" apply false
   id("io.gitlab.arturbosch.detekt") version "1.23.7" apply false
-  id("org.jetbrains.dokka") version "1.9.20" apply false
+  id("org.jetbrains.dokka") version "2.2.0" apply false
 }
 
 val groupId: String by project

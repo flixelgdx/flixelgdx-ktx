@@ -3,7 +3,7 @@
 
 [versions]
 detekt = "1.23.7"
-dokka = "1.9.20"
+dokka = "2.2.0"
 flixelgdx = "0.6.4"
 junit = "5.10.3"
 kotlin = "2.2.0"
