@@ -9,19 +9,15 @@ It is a **pure syntax layer**: operator overloads, extension functions, property
 that make the Java-based FlixelGDX API feel natural from Kotlin. It contains no runtime logic of its own and
 adds no new framework behavior.
 
-This repository has four published modules:
+This repository has two published modules:
 
 - **`flixelgdx-ktx-core`**: Extensions for collections, tweens, signals, saves, math types, groups, colors,
-  and animations.
-- **`flixelgdx-ktx-async`**: Coroutine integration; depends on `flixelgdx-ktx-core` and
-  `kotlinx-coroutines-core`.
+  and animations, plus coroutine integration (`org.flixelgdx.ktx.async`).
 - **`flixelgdx-ktx-ui`**: Builder DSL, skin DSL, bindings, and sugar for the
   [FlixelGDX UI](https://github.com/flixelgdx/flixelgdx-ui) extension; depends on `flixelgdx-ktx-core` and
   `flixelgdx-ui`.
-- **`flixelgdx-ktx-ui-async`**: Coroutine helpers for UI widgets (awaits and dialogs); depends on
-  `flixelgdx-ktx-ui` and `flixelgdx-ktx-async`.
 
-The UI modules follow the UI extension's own rule: **the UI never reads input.** Do not add helpers that read
+The UI module follows the UI extension's own rule: **the UI never reads input.** Do not add helpers that read
 `Flixel.mouse`, `Flixel.keys`, touches, or gamepads on the game's behalf.
 
 When `../flixelgdx` or `../flixelgdx-ui` exist next to this repository, `settings.gradle.kts` includes them as
@@ -86,6 +82,12 @@ Standard Java collection types (`ArrayList`, `HashMap`, `HashSet`, etc.) are ban
 same reasons they are banned in the base framework: they allocate too much garbage and consume too much
 memory. Use FlixelGDX collection types (`FlixelArray`, `FlixelMap`, `FlixelSet`, and so on) instead.
 The only exception is build-time code (Gradle plugins), which does not run at game runtime.
+
+### No kotlinx-coroutines
+
+Coroutine support is built only on the Kotlin standard library (`kotlin.coroutines`). Do not add a dependency
+on `kotlinx-coroutines` or any library that pulls it in: it relies on threads, locks, and atomics that TeaVM
+cannot compile, which breaks web builds.
 
 ### No reflection
 
@@ -172,6 +174,6 @@ Summarize edits in plain language: what changed, why, and how it fits the extens
 - Pull request titles should read as **past tense**, written as if announcing a new update. Examples:
     - "Added Kotlin operator sugar for FlixelGroup to make managing game objects more concise"
     - "Extended the tween DSL with a chained sequence builder for cleaner multi-step animations"
-    - "Added coroutine-based signal awaiting to the async module"
+    - "Added coroutine-based signal awaiting to the core module"
 - All pull requests must target the **`master`** branch.
 - If the user has changes present on the current branch, **do not undo, modify, or touch them**.

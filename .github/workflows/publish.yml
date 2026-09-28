@@ -32,7 +32,7 @@ jobs:
         run: ./gradlew detekt --no-daemon --warning-mode all
 
       - name: Run unit tests
-        run: ./gradlew :flixelgdx-ktx-core:test :flixelgdx-ktx-async:test --no-daemon --warning-mode all
+        run: ./gradlew :flixelgdx-ktx-core:test :flixelgdx-ktx-ui:test --no-daemon --warning-mode all
 
   publish:
     name: Publish artifacts

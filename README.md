@@ -85,6 +85,8 @@ button.tween(duration = 1f) {
 ### Coroutines
 
 FlixelGDX KTX provides clean, direct integration with the framework's core API and Kotlin's native coroutine system.
+Coroutines are part of `flixelgdx-ktx-core` and are built only on the Kotlin standard library, so they work on every
+platform, web builds included.
 
 ```kotlin
 val onDialogClosed = FlixelSignal<Unit>()
@@ -145,7 +147,7 @@ ui = uiDisplay(FlixelUiDisplay.createHudCamera(), skin) {
 }
 ```
 
-With `flixelgdx-ktx-ui-async`, a dialog is just a function that returns the player's answer:
+With coroutines, a dialog is just a function that returns the player's answer:
 
 ```kotlin
 fun confirmQuit() = launch {
@@ -177,18 +179,14 @@ flixelgdx-ktx = "<flixelgdx-version>"
 
 [libraries]
 flixelgdx-ktx-core = { module = "org.flixelgdx:flixelgdx-ktx-core", version.ref = "flixelgdx-ktx" }
-flixelgdx-ktx-async = { module = "org.flixelgdx:flixelgdx-ktx-async", version.ref = "flixelgdx-ktx" }
 flixelgdx-ktx-ui = { module = "org.flixelgdx:flixelgdx-ktx-ui", version.ref = "flixelgdx-ktx" }
-flixelgdx-ktx-ui-async = { module = "org.flixelgdx:flixelgdx-ktx-ui-async", version.ref = "flixelgdx-ktx" }
 ```
 
 ```kotlin
 // build.gradle.kts (in your core module of your game).
 dependencies {
   implementation(libs.flixelgdx.ktx.core)
-  implementation(libs.flixelgdx.ktx.async) // If you want to use coroutines.
   implementation(libs.flixelgdx.ktx.ui) // If you use FlixelGDX UI.
-  implementation(libs.flixelgdx.ktx.ui.async) // If you use FlixelGDX UI with coroutines.
 }
 ```
 
@@ -203,9 +201,7 @@ repositories {
 // In your game's core build.gradle.kts script:
 dependencies {
   implementation("org.flixelgdx:flixelgdx-ktx-core:<flixelgdx-version>")
-  implementation("org.flixelgdx:flixelgdx-ktx-async:<flixelgdx-version>")  // If you want to use coroutines.
   implementation("org.flixelgdx:flixelgdx-ktx-ui:<flixelgdx-version>")  // If you use FlixelGDX UI.
-  implementation("org.flixelgdx:flixelgdx-ktx-ui-async:<flixelgdx-version>")  // If you use FlixelGDX UI with coroutines.
 }
 ```
 
@@ -218,14 +214,7 @@ dependencies {
     <version>FLIXELGDX-VERSION</version>
 </dependency>
 
-<!-- If you want to use coroutines. -->
-<dependency>
-    <groupId>org.flixelgdx</groupId>
-    <artifactId>flixelgdx-ktx-async</artifactId>
-    <version>FLIXELGDX-VERSION</version>
-</dependency>
-
-<!-- If you use FlixelGDX UI (and flixelgdx-ktx-ui-async for UI with coroutines). -->
+<!-- If you use FlixelGDX UI. -->
 <dependency>
     <groupId>org.flixelgdx</groupId>
     <artifactId>flixelgdx-ktx-ui</artifactId>

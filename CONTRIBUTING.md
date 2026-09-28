@@ -40,7 +40,7 @@ Run all of the following before opening a pull request:
 
 ```bash
 # Run all unit tests across both modules.
-./gradlew :flixelgdx-ktx-core:test :flixelgdx-ktx-async:test
+./gradlew :flixelgdx-ktx-core:test :flixelgdx-ktx-ui:test
 
 # Auto-format source files.
 ./gradlew spotlessApply

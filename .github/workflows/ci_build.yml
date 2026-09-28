@@ -30,7 +30,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Assemble all modules
-        run: ./gradlew :flixelgdx-ktx-core:assemble :flixelgdx-ktx-async:assemble --no-daemon --warning-mode all
+        run: ./gradlew :flixelgdx-ktx-core:assemble :flixelgdx-ktx-ui:assemble --no-daemon --warning-mode all
         shell: bash
 
   format:
@@ -120,5 +120,5 @@ jobs:
         run: chmod +x gradlew
 
       - name: Run unit tests
-        run: ./gradlew :flixelgdx-ktx-core:test :flixelgdx-ktx-async:test --no-daemon --warning-mode all
+        run: ./gradlew :flixelgdx-ktx-core:test :flixelgdx-ktx-ui:test --no-daemon --warning-mode all
         shell: bash

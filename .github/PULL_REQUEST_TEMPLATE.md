@@ -4,8 +4,8 @@ Explain *what* was changed and *why*. Link to any relevant issues.
 
 ## Modules Affected
 
-- [ ] `flixelgdx-ktx-core` (core Kotlin extensions)
-- [ ] `flixelgdx-ktx-async` (coroutine async extensions)
+- [ ] `flixelgdx-ktx-core` (core Kotlin extensions and coroutines)
+- [ ] `flixelgdx-ktx-ui` (FlixelGDX UI extensions and UI coroutine helpers)
 
 ## Type of Change
 
@@ -25,7 +25,7 @@ Explain *what* was changed and *why*. Link to any relevant issues.
 - [ ] Spotless formatting check passes (`./gradlew spotlessCheck`).
 - [ ] detekt static analysis passes (`./gradlew detekt`).
 - [ ] Dokka HTML generation succeeds (`./gradlew dokkaHtml`).
-- [ ] All unit tests pass (`./gradlew :flixelgdx-ktx-core:test :flixelgdx-ktx-async:test`).
+- [ ] All unit tests pass (`./gradlew :flixelgdx-ktx-core:test :flixelgdx-ktx-ui:test`).
 - [ ] I have updated the documentation accordingly (if applicable).
 - [ ] I have added tests that prove my fix is effective or that my feature works (if any code was added or changed).
 

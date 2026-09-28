@@ -81,14 +81,11 @@ Remove or rename a sibling directory to go back to resolving that artifact from 
 Unit tests live inside each module rather than a shared test module. Run them individually or together:
 
 ```bash
-# Core extensions only.
+# Core extensions and coroutines only.
 ./gradlew :flixelgdx-ktx-core:test
 
-# Coroutine extensions only.
-./gradlew :flixelgdx-ktx-async:test
-
 # UI extensions and UI coroutine helpers.
-./gradlew :flixelgdx-ktx-ui:test :flixelgdx-ktx-ui-async:test
+./gradlew :flixelgdx-ktx-ui:test
 
 # Every module at once.
 ./gradlew test
