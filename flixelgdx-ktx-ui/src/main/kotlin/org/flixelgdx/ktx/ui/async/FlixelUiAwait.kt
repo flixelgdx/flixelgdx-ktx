@@ -26,7 +26,7 @@
 package org.flixelgdx.ktx.ui.async
 
 import kotlin.coroutines.resume
-import kotlinx.coroutines.suspendCancellableCoroutine
+import org.flixelgdx.ktx.async.suspendCancellable
 import org.flixelgdx.ui.FlixelUiButton
 import org.flixelgdx.ui.FlixelUiCheckbox
 import org.flixelgdx.ui.FlixelUiDropdown
@@ -103,7 +103,7 @@ suspend fun FlixelUiModal.awaitClose() {
  * Unlike `awaitOnce()`, the handler is removed again when the coroutine is canceled first.
  */
 private suspend inline fun <T, R> FlixelSignal<T>.awaitMapped(crossinline map: (T) -> R): R =
-  suspendCancellableCoroutine { cont ->
+  suspendCancellable { cont ->
     val handler =
       SignalHandler<T> { data ->
         if (cont.isActive) {

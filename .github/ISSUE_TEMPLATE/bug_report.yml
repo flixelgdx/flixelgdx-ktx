@@ -52,6 +52,6 @@ body:
       label: Module
       description: Which module is this bug in?
       options:
-        - flixelgdx-ktx-core (core extensions)
-        - flixelgdx-ktx-async (coroutine extensions)
+        - flixelgdx-ktx-core (core extensions and coroutines)
+        - flixelgdx-ktx-ui (UI extensions and UI coroutine helpers)
         - Other (please specify in description)

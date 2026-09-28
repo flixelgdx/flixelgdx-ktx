@@ -27,9 +27,8 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
-import kotlinx.coroutines.launch
 import org.flixelgdx.ktx.async.Dispatcher
-import org.flixelgdx.ktx.async.scope
+import org.flixelgdx.ktx.async.launch
 import org.flixelgdx.ktx.ui.build
 import org.flixelgdx.ktx.ui.button
 import org.flixelgdx.ktx.ui.checkbox
@@ -52,7 +51,7 @@ class FlixelUiAsyncTest {
     lateinit var button: FlixelUiButton
     ui.build { button = button("Go") }
     var clicked = false
-    scope.launch(Dispatcher) {
+    launch {
       button.awaitClick()
       clicked = true
     }
@@ -73,9 +72,9 @@ class FlixelUiAsyncTest {
       val box = checkbox("Sound")
       val quality = dropdown(100f) { items("Low", "High") }
       val name = textBox(200f)
-      scope.launch(Dispatcher) { checked = box.awaitChange() }
-      scope.launch(Dispatcher) { selected = quality.awaitSelect() }
-      scope.launch(Dispatcher) { submitted = name.awaitSubmit() }
+      launch { checked = box.awaitChange() }
+      launch { selected = quality.awaitSelect() }
+      launch { submitted = name.awaitSubmit() }
       Dispatcher.update()
 
       box.click()
@@ -98,11 +97,10 @@ class FlixelUiAsyncTest {
     lateinit var button: FlixelUiButton
     ui.build { button = button("Go") }
     var clicked = false
-    val job =
-      scope.launch(Dispatcher) {
-        button.awaitClick()
-        clicked = true
-      }
+    val job = launch {
+      button.awaitClick()
+      clicked = true
+    }
     Dispatcher.update()
     job.cancel()
     Dispatcher.update()
@@ -116,7 +114,7 @@ class FlixelUiAsyncTest {
     val ui = testDisplay()
     val modal = ui.modal(200f, 100f) { label("Hi") }
     var closed = false
-    scope.launch(Dispatcher) {
+    launch {
       modal.awaitClose()
       closed = true
     }
@@ -132,7 +130,7 @@ class FlixelUiAsyncTest {
     val ui = testDisplay()
     lateinit var yes: FlixelUiButton
     var result: Boolean? = null
-    scope.launch(Dispatcher) {
+    launch {
       result =
         ui.dialog(300f, 160f, dismissed = false) { finish ->
           label("Really quit?")
@@ -156,9 +154,7 @@ class FlixelUiAsyncTest {
   fun `dialog returns dismissed when closed another way`() {
     val ui = testDisplay()
     var result: String? = null
-    scope.launch(Dispatcher) {
-      result = ui.dialog(300f, 160f, dismissed = "cancel") { label("Pick one") }
-    }
+    launch { result = ui.dialog(300f, 160f, dismissed = "cancel") { label("Pick one") } }
     Dispatcher.update()
     ui.closeModal()
     Dispatcher.update()
@@ -169,7 +165,7 @@ class FlixelUiAsyncTest {
   fun `canceling a dialog closes its modal`() {
     val ui = testDisplay()
     var modal: FlixelUiModal? = null
-    val job = scope.launch(Dispatcher) { ui.dialog(300f, 160f, dismissed = Unit) { modal = this } }
+    val job = launch { ui.dialog(300f, 160f, dismissed = Unit) { modal = this } }
     Dispatcher.update()
     assertTrue(modal!!.isOpen)
     job.cancel()
