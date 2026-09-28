@@ -25,7 +25,6 @@ package org.flixelgdx.ktx.ui
 
 import org.flixelgdx.Flixel
 import org.flixelgdx.FlixelCamera
-import org.flixelgdx.backend.desktop.file.FlixelJvmFiles
 import org.flixelgdx.ui.FlixelUiDisplay
 import org.flixelgdx.ui.skin.FlixelTextBoxStyle
 import org.flixelgdx.ui.skin.FlixelUiButtonStyle
@@ -39,9 +38,6 @@ import org.flixelgdx.ui.skin.FlixelUiSkin
 
 /** Prepares the headless framework state the UI needs and returns a fresh camera. */
 fun headlessCamera(): FlixelCamera {
-  if (Flixel.files !is FlixelJvmFiles) {
-    Flixel.files = FlixelJvmFiles()
-  }
   Flixel.cameras.clear()
   val camera = FlixelCamera(640, 360)
   Flixel.cameras.add(camera)
