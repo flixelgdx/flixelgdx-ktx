@@ -24,7 +24,6 @@
 package org.flixelgdx.ktx.async
 
 import kotlin.coroutines.resume
-import kotlinx.coroutines.suspendCancellableCoroutine
 import org.flixelgdx.Flixel
 import org.flixelgdx.util.timer.FlixelTimer
 
@@ -48,7 +47,7 @@ import org.flixelgdx.util.timer.FlixelTimer
  * @param seconds The number of in-game seconds to wait. Values less than or equal to zero fire on
  *   the next update frame, matching [FlixelTimer] zero-duration behavior.
  */
-suspend fun delay(seconds: Float): Unit = suspendCancellableCoroutine { cont ->
+suspend fun delay(seconds: Float): Unit = suspendCancellable { cont ->
   val timer = FlixelTimer()
   timer.start(seconds, { cont.resume(Unit) }, 1)
   cont.invokeOnCancellation { timer.cancel() }

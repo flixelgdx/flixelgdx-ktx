@@ -23,29 +23,27 @@
  */
 package org.flixelgdx.ktx.async
 
+import kotlin.coroutines.AbstractCoroutineContextElement
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.ContinuationInterceptor
 import kotlin.coroutines.CoroutineContext
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.launch
+import kotlin.coroutines.startCoroutine
 import org.flixelgdx.Flixel
 import org.flixelgdx.collections.FlixelArray
 
 /**
- * A [CoroutineDispatcher] that runs enqueued continuations on the game thread, one frame at a time.
+ * Runs resumed coroutines on the game thread, one dispatcher pass per frame.
  *
- * Safety model: all coroutines dispatched here execute on the same thread that drives the game
- * loop. Each suspension point slices execution between frames. A coroutine that never suspends will
- * freeze the entire frame, so always use [delay] or other suspension points for long-running work.
- * Launch new coroutines once per game sequence (for example inside a state's `create()` method)
- * rather than every frame; each [launch] allocates a coroutine object.
+ * Safety model: all coroutines started with [launch] execute on the same thread that drives the
+ * game loop. Each suspension point slices execution between frames. A coroutine that never suspends
+ * will freeze the entire frame, so always use [delay] or other suspension points for long-running
+ * work. Launch new coroutines once per game sequence (for example inside a state's `create()`
+ * method) rather than every frame; each [launch] allocates a coroutine object.
  *
- * The scope is shared per [scope] and auto-cancels its children when a state switch fires, keeping
- * the scope itself alive for reuse in the next state.
+ * The dispatcher is built only on the coroutine support in the Kotlin standard library. It uses no
+ * threads, locks, or atomics, so it behaves the same on every platform, including web builds.
  *
- * Example - a simple timed sequence started once in create():
+ * Example of a simple timed sequence started once in `create()`:
  * ```
  * installFlixelCoroutines()
  * launch {
@@ -55,72 +53,98 @@ import org.flixelgdx.collections.FlixelArray
  * }
  * ```
  */
-object Dispatcher : CoroutineDispatcher() {
+object Dispatcher :
+  AbstractCoroutineContextElement(ContinuationInterceptor), ContinuationInterceptor {
 
-  private val queue: FlixelArray<Runnable> = FlixelArray()
+  /** Blocks waiting for the next [update]. */
+  private var queue: FlixelArray<Runnable> = FlixelArray()
 
-  /** Blocks queued during a drain are held here so they start next frame. */
-  private val nextQueue: FlixelArray<Runnable> = FlixelArray()
+  /** The blocks of the pass in progress; swapped with [queue] so new blocks wait a pass. */
+  private var running: FlixelArray<Runnable> = FlixelArray()
 
-  /** True while drain() is executing, so newly dispatched blocks go to nextQueue. */
-  private var draining: Boolean = false
+  override fun <T> interceptContinuation(continuation: Continuation<T>): Continuation<T> =
+    GameThreadContinuation(continuation)
 
-  override fun dispatch(context: CoroutineContext, block: Runnable) {
-    if (draining) {
-      nextQueue.add(block)
-    } else {
-      queue.add(block)
-    }
+  internal fun dispatch(block: Runnable) {
+    queue.add(block)
   }
 
   /**
-   * Drains all queued continuations, running each one exactly once.
+   * Runs every block queued since the last pass, each exactly once.
    *
    * This is called automatically each frame when [installFlixelCoroutines] has been called. Blocks
-   * enqueued during the drain run on the next frame to prevent re-entrancy from executing in the
-   * same drain pass.
+   * queued during the pass run on the next pass, so a coroutine that resumes another one cannot
+   * make this loop run forever. If a coroutine throws, the exception propagates out of this call
+   * and the blocks that did not run yet are kept for the next pass.
    */
   fun update() {
     if (queue.size == 0) {
       return
     }
-    draining = true
-    val size = queue.size
-    for (i in 0 until size) {
-      queue[i].run()
-    }
-    queue.clear()
-    draining = false
-
-    // Move any blocks that arrived during the drain into the main queue for next frame.
-    val nextSize = nextQueue.size
-    if (nextSize > 0) {
-      for (i in 0 until nextSize) {
-        queue.add(nextQueue[i])
+    val batch = queue
+    queue = running
+    running = batch
+    var index = 0
+    try {
+      while (index < batch.size) {
+        val block = batch[index]
+        index++
+        block.run()
       }
-      nextQueue.clear()
+    } finally {
+      for (i in index until batch.size) {
+        queue.add(batch[i])
+      }
+      batch.clear()
     }
   }
 }
 
 /**
- * The shared [CoroutineScope] for all game-thread coroutines.
+ * Wraps a coroutine's continuation so every resumption waits in the [Dispatcher] queue.
  *
- * Built on [Dispatcher] with a [SupervisorJob] so individual child failures do not cancel other
- * siblings. Children are canceled on each state switch (via [installFlixelCoroutines]) so the scope
- * itself remains reusable across states.
+ * When the coroutine's job was canceled in the meantime, a successful resumption is turned into a
+ * cancellation, so a canceled coroutine never runs more of its body than its cleanup.
  */
-val scope: CoroutineScope = CoroutineScope(Dispatcher + SupervisorJob())
+private class GameThreadContinuation<T>(private val continuation: Continuation<T>) :
+  Continuation<T>, Runnable {
+
+  private var value: Any? = null
+  private var error: Throwable? = null
+
+  override val context: CoroutineContext
+    get() = continuation.context
+
+  override fun resumeWith(result: Result<T>) {
+    value = result.getOrNull()
+    error = result.exceptionOrNull()
+    Dispatcher.dispatch(this)
+  }
+
+  override fun run() {
+    val job = continuation.context[FlixelJob]
+    val failure = error ?: if (job != null && job.isCancelled) job.cancellationException() else null
+    val result = value
+    value = null
+    error = null
+    if (failure != null) {
+      continuation.resumeWith(Result.failure(failure))
+    } else {
+      // The value came from a Result<T>, so the cast only restores the erased type.
+      @Suppress("UNCHECKED_CAST") continuation.resumeWith(Result.success(result as T))
+    }
+  }
+}
 
 private var installed: Boolean = false
 
 /**
  * Wires [Dispatcher] into the game loop exactly once.
  *
- * Subscribes [Dispatcher.update] to [Flixel.Signals.postUpdate] so that queued continuations are
- * pumped every frame. Also subscribes to [Flixel.Signals.preStateSwitch] to cancel all children of
- * [scope], preventing coroutines from leaking across states. The scope itself is not canceled, so
- * new coroutines can be launched in the next state without calling this function again.
+ * Subscribes [Dispatcher.update] to [Flixel.Signals.postUpdate] so that resumed coroutines run
+ * every frame. Also subscribes [cancelAllCoroutines] to [Flixel.Signals.preStateSwitch], so
+ * coroutines never leak from one state into the next. Coroutines launched in the next state run
+ * normally without calling this function again.
  *
  * Calling this more than once is safe; subsequent calls are no-ops.
  */
@@ -130,17 +154,26 @@ fun installFlixelCoroutines() {
   }
   installed = true
   Flixel.Signals.postUpdate.add { Dispatcher.update() }
-  Flixel.Signals.preStateSwitch.add { scope.coroutineContext.cancelChildren() }
+  Flixel.Signals.preStateSwitch.add { cancelAllCoroutines() }
 }
 
 /**
- * Launches a new coroutine in [scope] that runs on the game thread.
+ * Launches a new coroutine that runs on the game thread.
  *
- * This is a convenience wrapper for [CoroutineScope.launch] on [scope]. Do not call this per-frame;
+ * The body starts on the next [Dispatcher] pass, not inside this call. Do not call this per frame;
  * each invocation allocates a new coroutine object. Launch sequences once (for example inside a
  * state's `create()` method) and let suspension points slice work across frames.
  *
- * @param block The coroutine body to execute.
- * @return The [Job] representing the launched coroutine.
+ * If the body throws an exception other than a cancellation, the exception propagates out of the
+ * [Dispatcher] pass, so it reaches the game's crash handler just like an exception thrown from
+ * `update()`.
+ *
+ * @param block The coroutine body. Its receiver is the coroutine's own [FlixelJob].
+ * @return The [FlixelJob] representing the launched coroutine.
  */
-fun launch(block: suspend CoroutineScope.() -> Unit): Job = scope.launch(block = block)
+fun launch(block: suspend FlixelJob.() -> Unit): FlixelJob {
+  val job = FlixelJob()
+  trackJob(job)
+  block.startCoroutine(job, job.completion)
+  return job
+}

@@ -26,7 +26,7 @@
 package org.flixelgdx.ktx.ui.async
 
 import kotlin.coroutines.resume
-import kotlinx.coroutines.suspendCancellableCoroutine
+import org.flixelgdx.ktx.async.suspendCancellable
 import org.flixelgdx.ktx.ui.FlixelUiDsl
 import org.flixelgdx.ui.FlixelUiDisplay
 import org.flixelgdx.ui.FlixelUiModal
@@ -75,7 +75,7 @@ suspend fun <R> FlixelUiDisplay.dialog(
   if (style != null) {
     modal.styleName = style
   }
-  return suspendCancellableCoroutine { cont ->
+  return suspendCancellable { cont ->
     var done = false
     val finish: (R) -> Unit = { value ->
       if (!done) {

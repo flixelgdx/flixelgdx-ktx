@@ -27,7 +27,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
-import kotlinx.coroutines.launch
 import org.flixelgdx.FlixelGame
 import org.flixelgdx.animation.FlixelAnimationController
 import org.flixelgdx.graphics.FlixelBatch
@@ -51,7 +50,7 @@ class FlixelAwaitTest {
     var received: String? = null
 
     // Launch a coroutine that waits for the signal.
-    scope.launch(Dispatcher) { received = signal.awaitOnce() }
+    launch { received = signal.awaitOnce() }
 
     // Pump so the coroutine starts and parks at awaitOnce.
     Dispatcher.update()
@@ -70,7 +69,7 @@ class FlixelAwaitTest {
     val signal = FlixelSignal<Int>()
     val results = mutableListOf<Int>()
 
-    scope.launch(Dispatcher) { results.add(signal.awaitOnce()) }
+    launch { results.add(signal.awaitOnce()) }
 
     Dispatcher.update()
 
@@ -90,7 +89,7 @@ class FlixelAwaitTest {
     val signal = FlixelSignal<Void>()
     var resumed = false
 
-    scope.launch(Dispatcher) {
+    launch {
       signal.awaitOnce()
       resumed = true
     }
@@ -110,8 +109,8 @@ class FlixelAwaitTest {
     val results = mutableListOf<Int>()
 
     // Launch two coroutines both awaiting the same signal.
-    scope.launch(Dispatcher) { results.add(signal.awaitOnce()) }
-    scope.launch(Dispatcher) { results.add(signal.awaitOnce()) }
+    launch { results.add(signal.awaitOnce()) }
+    launch { results.add(signal.awaitOnce()) }
 
     // Pump once to start both coroutines.
     Dispatcher.update()

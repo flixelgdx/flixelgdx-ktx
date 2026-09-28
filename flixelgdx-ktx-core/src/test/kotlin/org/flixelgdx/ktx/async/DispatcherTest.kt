@@ -23,9 +23,9 @@
  */
 package org.flixelgdx.ktx.async
 
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -36,8 +36,8 @@ class DispatcherTest {
   fun blocksDoNotRunBeforeUpdate() {
     val log = mutableListOf<Int>()
 
-    Dispatcher.dispatch(EmptyCoroutineContext, Runnable { log.add(1) })
-    Dispatcher.dispatch(EmptyCoroutineContext, Runnable { log.add(2) })
+    Dispatcher.dispatch(Runnable { log.add(1) })
+    Dispatcher.dispatch(Runnable { log.add(2) })
 
     assertTrue(log.isEmpty(), "Blocks should not run before update() is called")
   }
@@ -46,9 +46,9 @@ class DispatcherTest {
   fun allBlocksRunAfterUpdate() {
     val log = mutableListOf<Int>()
 
-    Dispatcher.dispatch(EmptyCoroutineContext, Runnable { log.add(1) })
-    Dispatcher.dispatch(EmptyCoroutineContext, Runnable { log.add(2) })
-    Dispatcher.dispatch(EmptyCoroutineContext, Runnable { log.add(3) })
+    Dispatcher.dispatch(Runnable { log.add(1) })
+    Dispatcher.dispatch(Runnable { log.add(2) })
+    Dispatcher.dispatch(Runnable { log.add(3) })
 
     Dispatcher.update()
 
@@ -57,7 +57,7 @@ class DispatcherTest {
 
   @Test
   fun queueIsEmptyAfterUpdate() {
-    Dispatcher.dispatch(EmptyCoroutineContext, Runnable { /* no-op */ })
+    Dispatcher.dispatch(Runnable { /* no-op */ })
     Dispatcher.update()
 
     // A second update should not re-run anything.
@@ -76,12 +76,11 @@ class DispatcherTest {
 
     // The block enqueued during the drain should NOT run in the same update() call.
     Dispatcher.dispatch(
-      EmptyCoroutineContext,
       Runnable {
         firstFrameLog.add(1)
         // Enqueue a block while the drain is in progress.
-        Dispatcher.dispatch(EmptyCoroutineContext, Runnable { secondFrameLog.add(2) })
-      },
+        Dispatcher.dispatch(Runnable { secondFrameLog.add(2) })
+      }
     )
 
     Dispatcher.update()
@@ -103,12 +102,11 @@ class DispatcherTest {
     val secondFrameLog = mutableListOf<Int>()
 
     Dispatcher.dispatch(
-      EmptyCoroutineContext,
       Runnable {
         firstFrameLog.add(1)
-        Dispatcher.dispatch(EmptyCoroutineContext, Runnable { secondFrameLog.add(2) })
-        Dispatcher.dispatch(EmptyCoroutineContext, Runnable { secondFrameLog.add(3) })
-      },
+        Dispatcher.dispatch(Runnable { secondFrameLog.add(2) })
+        Dispatcher.dispatch(Runnable { secondFrameLog.add(3) })
+      }
     )
 
     Dispatcher.update()
@@ -126,5 +124,19 @@ class DispatcherTest {
       secondFrameLog,
       "Both re-entrant blocks run in FIFO order on next frame",
     )
+  }
+
+  @Test
+  fun blocksAfterAThrowingBlockRunOnTheNextUpdate() {
+    val log = mutableListOf<Int>()
+
+    Dispatcher.dispatch(Runnable { throw IllegalStateException("boom") })
+    Dispatcher.dispatch(Runnable { log.add(1) })
+
+    assertFailsWith<IllegalStateException> { Dispatcher.update() }
+    assertTrue(log.isEmpty())
+
+    Dispatcher.update()
+    assertEquals(listOf(1), log, "Blocks that did not run because of the exception are kept")
   }
 }

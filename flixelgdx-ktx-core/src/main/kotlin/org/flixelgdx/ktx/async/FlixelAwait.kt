@@ -24,7 +24,6 @@
 package org.flixelgdx.ktx.async
 
 import kotlin.coroutines.resume
-import kotlinx.coroutines.suspendCancellableCoroutine
 import org.flixelgdx.animation.FlixelAnimationController
 import org.flixelgdx.animation.FlixelAnimationFrameSignalData
 import org.flixelgdx.tween.FlixelTween
@@ -54,7 +53,7 @@ import org.flixelgdx.util.signal.FlixelSignal
  * }
  * ```
  */
-suspend fun FlixelTween.await(): Unit = suspendCancellableCoroutine { cont ->
+suspend fun FlixelTween.await(): Unit = suspendCancellable { cont ->
   then {
     if (cont.isActive) {
       cont.resume(Unit)
@@ -83,7 +82,7 @@ suspend fun FlixelTween.await(): Unit = suspendCancellableCoroutine { cont ->
  * @return The value the signal was dispatched with, or `null` if dispatched via the no-arg
  *   overload.
  */
-suspend fun <T> FlixelSignal<T>.awaitOnce(): T = suspendCancellableCoroutine { cont ->
+suspend fun <T> FlixelSignal<T>.awaitOnce(): T = suspendCancellable { cont ->
   addOnce { data: T ->
     if (cont.isActive) {
       cont.resume(data)
@@ -118,7 +117,7 @@ suspend fun <T> FlixelSignal<T>.awaitOnce(): T = suspendCancellableCoroutine { c
  * @return The [FlixelAnimationFrameSignalData] from the final frame of the animation.
  */
 suspend fun FlixelAnimationController.await(name: String): FlixelAnimationFrameSignalData =
-  suspendCancellableCoroutine { cont ->
+  suspendCancellable { cont ->
     // We need to re-register on every non-matching finish, so use a permanent add + manual remove.
     val handler =
       object : FlixelSignal.SignalHandler<FlixelAnimationFrameSignalData> {
