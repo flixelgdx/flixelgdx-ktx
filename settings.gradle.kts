@@ -27,12 +27,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "flixelgdx-ktx"
 
-include(
-  "flixelgdx-ktx-core",
-  "flixelgdx-ktx-async",
-  "flixelgdx-ktx-ui",
-  "flixelgdx-ktx-ui-async",
-)
+include("flixelgdx-ktx-core", "flixelgdx-ktx-ui")
 
 if (file("../flixelgdx").isDirectory) {
   includeBuild("../flixelgdx")
