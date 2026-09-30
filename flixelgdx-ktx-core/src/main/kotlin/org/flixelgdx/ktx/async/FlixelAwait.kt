@@ -26,10 +26,10 @@ package org.flixelgdx.ktx.async
 import kotlin.coroutines.resume
 import org.flixelgdx.animation.FlixelAnimationController
 import org.flixelgdx.animation.FlixelAnimationFrameSignalData
+import org.flixelgdx.signal.FlixelSignal
 import org.flixelgdx.tween.FlixelTween
 import org.flixelgdx.tween.settings.FlixelTweenSettings
 import org.flixelgdx.tween.settings.FlixelTweenType
-import org.flixelgdx.signal.FlixelSignal
 
 /**
  * Suspends the current coroutine until this tween completes its final cycle.

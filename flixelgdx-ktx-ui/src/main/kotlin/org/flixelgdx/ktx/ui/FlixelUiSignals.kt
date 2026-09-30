@@ -25,6 +25,7 @@
 
 package org.flixelgdx.ktx.ui
 
+import org.flixelgdx.signal.FlixelSignal.SignalHandler
 import org.flixelgdx.ui.FlixelUiButton
 import org.flixelgdx.ui.FlixelUiCheckbox
 import org.flixelgdx.ui.FlixelUiDropdown
@@ -32,7 +33,6 @@ import org.flixelgdx.ui.FlixelUiModal
 import org.flixelgdx.ui.FlixelUiRadioButton
 import org.flixelgdx.ui.FlixelUiRadioGroup
 import org.flixelgdx.ui.text.FlixelTextBox
-import org.flixelgdx.signal.FlixelSignal.SignalHandler
 
 /**
  * Short handler registration for the signals of FlixelGDX UI widgets.
