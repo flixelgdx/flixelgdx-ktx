@@ -35,6 +35,7 @@ class FlixelUiBindingsTest {
     var name = "Hero"
     var quality = 2
     var difficulty = 1
+    var volume = 0.5f
   }
 
   @Test
@@ -74,6 +75,21 @@ class FlixelUiBindingsTest {
       quality.select(0)
     }
     assertEquals(0, settings.quality)
+  }
+
+  @Test
+  fun `slider shows the property silently and writes changes back`() {
+    val settings = Settings()
+    val ui = testDisplay()
+    var signals = 0
+    ui.build {
+      val volume = slider(100f).bind(settings::volume)
+      assertEquals(0.5f, volume.value)
+      volume.onChange.add { signals++ }
+      volume.setValue(0.75f)
+    }
+    assertEquals(0.75f, settings.volume)
+    assertEquals(1, signals)
   }
 
   @Test

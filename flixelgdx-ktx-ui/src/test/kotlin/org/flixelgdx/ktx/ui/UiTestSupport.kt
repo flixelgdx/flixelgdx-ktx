@@ -35,6 +35,7 @@ import org.flixelgdx.ui.skin.FlixelUiModalStyle
 import org.flixelgdx.ui.skin.FlixelUiPanelStyle
 import org.flixelgdx.ui.skin.FlixelUiRadioButtonStyle
 import org.flixelgdx.ui.skin.FlixelUiSkin
+import org.flixelgdx.ui.skin.FlixelUiSliderStyle
 
 /** Prepares the headless framework state the UI needs and returns a fresh camera. */
 fun headlessCamera(): FlixelCamera {
@@ -54,6 +55,7 @@ fun testSkin(): FlixelUiSkin {
   skin.add("default", FlixelUiCheckboxStyle())
   skin.add("default", FlixelUiRadioButtonStyle())
   skin.add("default", FlixelUiDropdownStyle())
+  skin.add("default", FlixelUiSliderStyle())
   skin.add("default", FlixelTextBoxStyle())
   return skin
 }

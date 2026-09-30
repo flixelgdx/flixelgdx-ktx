@@ -38,6 +38,7 @@ import org.flixelgdx.ui.skin.FlixelUiModalStyle
 import org.flixelgdx.ui.skin.FlixelUiPanelStyle
 import org.flixelgdx.ui.skin.FlixelUiRadioButtonStyle
 import org.flixelgdx.ui.skin.FlixelUiSkin
+import org.flixelgdx.ui.skin.FlixelUiSliderStyle
 import org.flixelgdx.ui.skin.FlixelUiStyle
 import org.flixelgdx.ui.skin.FlixelUiTooltipStyle
 import org.flixelgdx.util.FlixelColor
@@ -207,6 +208,18 @@ class FlixelUiSkinScope(val skin: FlixelUiSkin) {
     name: String = DEFAULT_STYLE,
     block: FlixelUiDropdownStyle.() -> Unit,
   ): FlixelUiDropdownStyle = style(name, FlixelUiDropdownStyle(), block)
+
+  /**
+   * Declares a slider style.
+   *
+   * @param name The style name, `"default"` unless given.
+   * @param block Sets the style's fields.
+   * @return The stored style.
+   */
+  inline fun slider(
+    name: String = DEFAULT_STYLE,
+    block: FlixelUiSliderStyle.() -> Unit,
+  ): FlixelUiSliderStyle = style(name, FlixelUiSliderStyle(), block)
 
   /**
    * Declares a text box style.

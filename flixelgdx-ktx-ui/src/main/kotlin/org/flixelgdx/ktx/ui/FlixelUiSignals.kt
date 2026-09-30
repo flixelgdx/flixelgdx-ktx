@@ -32,6 +32,7 @@ import org.flixelgdx.ui.FlixelUiDropdown
 import org.flixelgdx.ui.FlixelUiModal
 import org.flixelgdx.ui.FlixelUiRadioButton
 import org.flixelgdx.ui.FlixelUiRadioGroup
+import org.flixelgdx.ui.FlixelUiSlider
 import org.flixelgdx.ui.text.FlixelTextBox
 
 /**
@@ -92,6 +93,17 @@ fun FlixelUiRadioButton.onChange(
 fun FlixelUiRadioGroup.onChange(
   handler: SignalHandler<FlixelUiRadioGroup>
 ): SignalHandler<FlixelUiRadioGroup> {
+  onChange.add(handler)
+  return handler
+}
+
+/**
+ * Registers [handler] to run whenever the value of this slider changes.
+ *
+ * @param handler Runs with this slider after each change; read `value` for the new value.
+ * @return The registered handler.
+ */
+fun FlixelUiSlider.onChange(handler: SignalHandler<FlixelUiSlider>): SignalHandler<FlixelUiSlider> {
   onChange.add(handler)
   return handler
 }
