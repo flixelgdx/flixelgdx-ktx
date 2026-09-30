@@ -82,6 +82,14 @@ button.tween(duration = 1f) {
 }
 ```
 
+Range bounds (such as a particle emitter's `scale`, `alpha`, and `color`) store their curve in a Java `ease` field,
+which Kotlin cannot assign a function reference or lambda to directly. The `ease(...)` extension fills that gap.
+
+```kotlin
+emitter.scale.ease(FlixelEase::quadOut)
+emitter.alpha.ease { t -> t * t }
+```
+
 ### Coroutines
 
 FlixelGDX KTX provides clean, direct integration with the framework's core API and Kotlin's native coroutine system.
