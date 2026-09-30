@@ -21,68 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@file:JvmName("FlixelEases")
+@file:JvmName("FlixelColorRanges")
 
-package org.flixelgdx.ktx.tween
+package org.flixelgdx.ktx.util
 
-import org.flixelgdx.math.FlixelPointRangeBounds
-import org.flixelgdx.math.FlixelRangeBounds
 import org.flixelgdx.tween.ease.FlixelEaseFunction
 import org.flixelgdx.util.FlixelColorRangeBounds
 
 /*
- * The range bounds types expose their curve as a public Java field of type FlixelEaseFunction.
+ * The color range bounds type exposes its curve as a public Java field of type FlixelEaseFunction.
  * Kotlin only converts lambdas and function references to a Java interface when they are passed
- * as function arguments, never when they are assigned to a field, so these setters give the field
+ * as function arguments, never when they are assigned to a field, so this setter gives the field
  * a function-shaped entry point.
  */
 
 /**
- * Sets the curve this range follows from its start value to its end value.
- *
- * This is the Kotlin-friendly way to assign [FlixelRangeBounds.ease], since a function reference or
- * lambda cannot be assigned to that field directly. The ease is stored once, so call this while
- * setting up (for example, in `create()`), not every frame.
- *
- * Example:
- * ```
- * emitter.alpha.set(1f, 1f, 0f, 0f)
- * emitter.alpha.ease(FlixelEase::quadIn)
- * emitter.speed.ease { t -> t * t }
- * ```
- *
- * @param ease The easing function to use, or `null` for a straight line.
- * @return This range, for chaining.
- */
-fun FlixelRangeBounds.ease(ease: FlixelEaseFunction?): FlixelRangeBounds {
-  this.ease = ease
-  return this
-}
-
-/**
- * Sets the curve this point range follows from its start value to its end value.
- *
- * This is the Kotlin-friendly way to assign [FlixelPointRangeBounds.ease]. See
- * [FlixelRangeBounds.ease] for details.
- *
- * Example:
- * ```
- * emitter.scale.ease(FlixelEase::quadOut)
- * ```
- *
- * @param ease The easing function to use, or `null` for a straight line.
- * @return This range, for chaining.
- */
-fun FlixelPointRangeBounds.ease(ease: FlixelEaseFunction?): FlixelPointRangeBounds {
-  this.ease = ease
-  return this
-}
-
-/**
  * Sets the curve this color range follows from its start color to its end color.
  *
- * This is the Kotlin-friendly way to assign [FlixelColorRangeBounds.ease]. See
- * [FlixelRangeBounds.ease] for details.
+ * This is the Kotlin-friendly way to assign [FlixelColorRangeBounds.ease]. It works like the range
+ * bounds overloads in `org.flixelgdx.ktx.math`: set it once during setup, not every frame.
  *
  * Example:
  * ```

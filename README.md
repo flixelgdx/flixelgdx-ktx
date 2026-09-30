@@ -83,11 +83,17 @@ button.tween(duration = 1f) {
 ```
 
 Range bounds (such as a particle emitter's `scale`, `alpha`, and `color`) store their curve in a Java `ease` field,
-which Kotlin cannot assign a function reference or lambda to directly. The `ease(...)` extension fills that gap.
+which Kotlin cannot assign a function reference or lambda to directly. The `ease(...)` extensions fill that gap. They
+mirror the framework's packages: `org.flixelgdx.ktx.math.ease` covers number and point ranges, and
+`org.flixelgdx.ktx.util.ease` covers color ranges.
 
 ```kotlin
+import org.flixelgdx.ktx.math.ease
+import org.flixelgdx.ktx.util.ease
+
 emitter.scale.ease(FlixelEase::quadOut)
 emitter.alpha.ease { t -> t * t }
+emitter.color.ease(FlixelEase::sineInOut)
 ```
 
 ### Coroutines

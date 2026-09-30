@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.flixelgdx.ktx.tween
+package org.flixelgdx.ktx.math
 
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -29,11 +29,9 @@ import kotlin.test.assertSame
 import org.flixelgdx.math.FlixelPointRangeBounds
 import org.flixelgdx.math.FlixelRangeBounds
 import org.flixelgdx.tween.ease.FlixelEase
-import org.flixelgdx.util.FlixelColor
-import org.flixelgdx.util.FlixelColorRangeBounds
 import org.junit.jupiter.api.Test
 
-class FlixelEasesTest {
+class FlixelRangesTest {
 
   @Test
   fun `range ease accepts a function reference`() {
@@ -63,13 +61,5 @@ class FlixelEasesTest {
     val result = range.ease(FlixelEase::sineInOut)
     assertSame(range, result)
     assertEquals(FlixelEase.sineInOut(0.3f), range.ease!!.compute(0.3f), 0.0001f)
-  }
-
-  @Test
-  fun `color range ease sets the field and chains`() {
-    val range = FlixelColorRangeBounds(FlixelColor.WHITE)
-    val result = range.ease { t -> 1f - t }
-    assertSame(range, result)
-    assertEquals(0.75f, range.ease!!.compute(0.25f), 0.0001f)
   }
 }
