@@ -27,14 +27,14 @@ package org.flixelgdx.ktx.ui.async
 
 import kotlin.coroutines.resume
 import org.flixelgdx.ktx.async.suspendCancellable
+import org.flixelgdx.signal.FlixelSignal
+import org.flixelgdx.signal.FlixelSignal.SignalHandler
 import org.flixelgdx.ui.FlixelUiButton
 import org.flixelgdx.ui.FlixelUiCheckbox
 import org.flixelgdx.ui.FlixelUiDropdown
 import org.flixelgdx.ui.FlixelUiModal
 import org.flixelgdx.ui.FlixelUiRadioGroup
 import org.flixelgdx.ui.text.FlixelTextBox
-import org.flixelgdx.signal.FlixelSignal
-import org.flixelgdx.signal.FlixelSignal.SignalHandler
 
 /**
  * Suspending functions that wait for the player to use a widget.

@@ -30,8 +30,8 @@ import kotlin.test.assertTrue
 import org.flixelgdx.FlixelGame
 import org.flixelgdx.animation.FlixelAnimationController
 import org.flixelgdx.graphics.FlixelBatch
-import org.flixelgdx.tween.FlixelTween
 import org.flixelgdx.signal.FlixelSignal
+import org.flixelgdx.tween.FlixelTween
 
 /**
  * Tests for [FlixelSignal.awaitOnce] continuation wiring.
