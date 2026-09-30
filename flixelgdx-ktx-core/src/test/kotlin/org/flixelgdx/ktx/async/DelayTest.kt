@@ -31,8 +31,8 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import org.flixelgdx.FlixelBasic
 import org.flixelgdx.graphics.FlixelBatch
-import org.flixelgdx.util.timer.FlixelTimer
-import org.flixelgdx.util.timer.FlixelTimerManager
+import org.flixelgdx.timer.FlixelTimer
+import org.flixelgdx.timer.FlixelTimerManager
 
 /**
  * Tests for [delay] coroutine plumbing.

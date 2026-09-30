@@ -33,8 +33,8 @@ import org.flixelgdx.ui.FlixelUiDropdown
 import org.flixelgdx.ui.FlixelUiModal
 import org.flixelgdx.ui.FlixelUiRadioGroup
 import org.flixelgdx.ui.text.FlixelTextBox
-import org.flixelgdx.util.signal.FlixelSignal
-import org.flixelgdx.util.signal.FlixelSignal.SignalHandler
+import org.flixelgdx.signal.FlixelSignal
+import org.flixelgdx.signal.FlixelSignal.SignalHandler
 
 /**
  * Suspending functions that wait for the player to use a widget.

@@ -25,7 +25,7 @@ package org.flixelgdx.ktx.async
 
 import kotlin.coroutines.resume
 import org.flixelgdx.Flixel
-import org.flixelgdx.util.timer.FlixelTimer
+import org.flixelgdx.timer.FlixelTimer
 
 /**
  * Suspends the current coroutine for the given number of in-game seconds.

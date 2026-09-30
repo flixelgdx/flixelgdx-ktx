@@ -36,7 +36,7 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import org.flixelgdx.Flixel
-import org.flixelgdx.util.signal.FlixelSignal
+import org.flixelgdx.signal.FlixelSignal
 
 /**
  * Tests for [FlixelJob] state, [cancelAllCoroutines], and how cancellation reaches a coroutine.

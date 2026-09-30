@@ -31,7 +31,7 @@ import org.flixelgdx.FlixelGame
 import org.flixelgdx.animation.FlixelAnimationController
 import org.flixelgdx.graphics.FlixelBatch
 import org.flixelgdx.tween.FlixelTween
-import org.flixelgdx.util.signal.FlixelSignal
+import org.flixelgdx.signal.FlixelSignal
 
 /**
  * Tests for [FlixelSignal.awaitOnce] continuation wiring.

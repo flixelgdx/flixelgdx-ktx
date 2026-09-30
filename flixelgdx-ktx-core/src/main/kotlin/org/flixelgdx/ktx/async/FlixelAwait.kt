@@ -29,7 +29,7 @@ import org.flixelgdx.animation.FlixelAnimationFrameSignalData
 import org.flixelgdx.tween.FlixelTween
 import org.flixelgdx.tween.settings.FlixelTweenSettings
 import org.flixelgdx.tween.settings.FlixelTweenType
-import org.flixelgdx.util.signal.FlixelSignal
+import org.flixelgdx.signal.FlixelSignal
 
 /**
  * Suspends the current coroutine until this tween completes its final cycle.

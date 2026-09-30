@@ -27,7 +27,7 @@ package org.flixelgdx.ktx.util
 
 import kotlin.reflect.KProperty
 import org.flixelgdx.Flixel
-import org.flixelgdx.util.save.FlixelSave
+import org.flixelgdx.save.FlixelSave
 
 /**
  * Property delegates that bind a Kotlin property to a key in the global [FlixelSave].

@@ -25,8 +25,8 @@
 
 package org.flixelgdx.ktx.signal
 
-import org.flixelgdx.util.signal.FlixelSignal
-import org.flixelgdx.util.signal.FlixelSignal.SignalHandler
+import org.flixelgdx.signal.FlixelSignal
+import org.flixelgdx.signal.FlixelSignal.SignalHandler
 
 /**
  * Idiomatic Kotlin operators for [FlixelSignal].
