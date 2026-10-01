@@ -26,9 +26,14 @@ package org.flixelgdx.ktx.ui
 import kotlin.test.assertEquals
 import kotlin.test.assertSame
 import kotlin.test.assertTrue
+import org.flixelgdx.graphics.FlixelFrame
+import org.flixelgdx.graphics.FlixelImage
+import org.flixelgdx.graphics.FlixelTexture
 import org.flixelgdx.ui.FlixelUiButton
 import org.flixelgdx.ui.FlixelUiLabel
+import org.flixelgdx.ui.FlixelUiPicture
 import org.flixelgdx.ui.FlixelUiRadioGroup
+import org.flixelgdx.ui.FlixelUiSlider
 import org.flixelgdx.ui.FlixelUiStack
 import org.flixelgdx.ui.skin.FlixelUiButtonStyle
 import org.flixelgdx.util.FlixelAlign
@@ -133,5 +138,70 @@ class FlixelUiBuildersTest {
     assertTrue(dialog.isOpen)
     assertEquals(1, sawContent)
     assertTrue(dialog.destroyOnClose)
+  }
+
+  @Test
+  fun `slider builders pass range, step, and orientation`() {
+    val ui = testDisplay()
+    var changes = 0
+    lateinit var horizontal: FlixelUiSlider
+    lateinit var vertical: FlixelUiSlider
+    ui.build {
+      horizontal =
+        hslider(200f, min = 0f, max = 100f, value = 50f, step = 10f, tooltip = "Volume") {
+          onChange { changes++ }
+        }
+      vertical = vslider(80f, max = 10f, value = 2f)
+    }
+
+    assertEquals(50f, horizontal.value)
+    assertEquals(100f, horizontal.max)
+    assertEquals(10f, horizontal.step)
+    assertEquals(false, horizontal.isVertical)
+    assertEquals("Volume", horizontal.tooltip.toString())
+    assertTrue(vertical.isVertical)
+    assertEquals(2f, vertical.value)
+    horizontal.setValue(70f)
+    assertEquals(1, changes)
+    assertSame(horizontal, ui.root.getChildAt(0))
+  }
+
+  @Test
+  fun `picture builder shows the frame with the given size and scale mode`() {
+    val ui = testDisplay()
+    val frame = FlixelFrame(StubTexture(64, 32))
+    lateinit var natural: FlixelUiPicture
+    lateinit var filled: FlixelUiPicture
+    ui.build {
+      natural = picture(frame)
+      filled =
+        picture(frame, 100f, 100f, FlixelUiPicture.ScaleMode.FILL, tooltip = "Logo") {
+          setRegion(0, 0, 16, 16)
+        }
+    }
+
+    assertEquals(64, natural.naturalWidth)
+    assertEquals(FlixelUiPicture.ScaleMode.FIT, natural.scaleMode)
+    assertEquals(FlixelUiPicture.ScaleMode.FILL, filled.scaleMode)
+    assertEquals(false, filled.isAutoSize)
+    assertTrue(filled.hasRegion())
+    assertEquals("Logo", filled.tooltip.toString())
+    assertEquals(2, ui.root.childCount)
+  }
+
+  private class StubTexture(private val w: Int, private val h: Int) : FlixelTexture {
+    override fun getHandle() = 1L
+
+    override fun getWidth() = w
+
+    override fun getHeight() = h
+
+    override fun isSmooth() = false
+
+    override fun setSmooth(smooth: Boolean) {}
+
+    override fun update(x: Int, y: Int, image: FlixelImage) {}
+
+    override fun destroy() {}
   }
 }

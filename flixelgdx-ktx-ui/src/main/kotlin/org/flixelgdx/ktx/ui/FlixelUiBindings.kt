@@ -29,6 +29,7 @@ import kotlin.reflect.KMutableProperty0
 import org.flixelgdx.ui.FlixelUiCheckbox
 import org.flixelgdx.ui.FlixelUiDropdown
 import org.flixelgdx.ui.FlixelUiRadioGroup
+import org.flixelgdx.ui.FlixelUiSlider
 import org.flixelgdx.ui.text.FlixelTextBox
 
 /**
@@ -108,5 +109,20 @@ fun FlixelUiDropdown.bind(property: KMutableProperty0<Int>): FlixelUiDropdown {
 fun FlixelUiRadioGroup.bind(property: KMutableProperty0<Int>): FlixelUiRadioGroup {
   selectedIndex = property.get()
   onChange.add { property.set(it.selectedIndex) }
+  return this
+}
+
+/**
+ * Shows [property] as this slider's value and writes every change back to it.
+ *
+ * Set the slider's range before binding, since the stored value is clamped into it. If clamping or
+ * stepping changes the value, the property keeps the original until the player moves the slider.
+ *
+ * @param property The property to bind, such as `settings::volume`.
+ * @return This slider, for chaining.
+ */
+fun FlixelUiSlider.bind(property: KMutableProperty0<Float>): FlixelUiSlider {
+  setValue(property.get(), false)
+  onChange.add { property.set(it.value) }
   return this
 }

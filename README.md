@@ -4,7 +4,7 @@
 
   [![Maven Central](https://img.shields.io/maven-central/v/org.flixelgdx/flixelgdx-ktx-core)](https://central.sonatype.com/artifact/org.flixelgdx/flixelgdx-ktx-core)
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-  [![FlixelGDX 0.6.4](https://img.shields.io/badge/FlixelGDX-0.6.4-red)](https://kotlinlang.org/)
+  [![FlixelGDX 0.7.0](https://img.shields.io/badge/FlixelGDX-0.7.0-red)](https://kotlinlang.org/)
   [![Kotlin 2.0+](https://img.shields.io/badge/Kotlin-2.0%2B-blue)](https://kotlinlang.org/)
   [![Java 17+](https://img.shields.io/badge/Java-17%2B-orange)](https://adoptium.net/temurin/releases?version=17)
 
@@ -122,6 +122,10 @@ val skin = uiSkin {
   label("title") {
     fontSize = 32
   }
+  slider {
+    track = track(colorFill(0x333333FF))
+    thumb = track(colorFill(0xEEEEEEFF))
+  }
 }
 
 // Then build the UI as a tree. Each widget is added to the block it is written in.
@@ -138,6 +142,8 @@ ui = uiDisplay(FlixelUiDisplay.createHudCamera(), skin) {
     dropdown(160f) {
       items("Low", "Medium", "High") 
     }.bind(settings::quality)
+    hslider(200f, max = 100f, step = 5f).bind(settings::volume) // Use vslider(...) for a vertical one.
+    picture(Flixel.files.internal("ui/logo.png"), 128f, 64f, FlixelUiPicture.ScaleMode.FIT)
     button("Quit", style = "danger") {
       onClick {
         confirmQuit()

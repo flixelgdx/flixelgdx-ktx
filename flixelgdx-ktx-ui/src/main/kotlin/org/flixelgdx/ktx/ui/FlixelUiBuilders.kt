@@ -27,6 +27,7 @@ package org.flixelgdx.ktx.ui
 
 import org.flixelgdx.FlixelCamera
 import org.flixelgdx.file.FlixelFile
+import org.flixelgdx.graphics.FlixelFrame
 import org.flixelgdx.ui.FlixelUiButton
 import org.flixelgdx.ui.FlixelUiCheckbox
 import org.flixelgdx.ui.FlixelUiContainer
@@ -35,8 +36,10 @@ import org.flixelgdx.ui.FlixelUiDropdown
 import org.flixelgdx.ui.FlixelUiLabel
 import org.flixelgdx.ui.FlixelUiModal
 import org.flixelgdx.ui.FlixelUiPanel
+import org.flixelgdx.ui.FlixelUiPicture
 import org.flixelgdx.ui.FlixelUiRadioButton
 import org.flixelgdx.ui.FlixelUiRadioGroup
+import org.flixelgdx.ui.FlixelUiSlider
 import org.flixelgdx.ui.FlixelUiStack
 import org.flixelgdx.ui.FlixelUiWidget
 import org.flixelgdx.ui.skin.FlixelUiSkin
@@ -391,4 +394,140 @@ inline fun FlixelUiContainer.textBox(
 ): FlixelTextBox {
   val box = if (height != null) FlixelTextBox(width, height) else FlixelTextBox(width)
   return place(box, style, tooltip, block)
+}
+
+/**
+ * Adds a horizontal slider, with the minimum on the left.
+ *
+ * ```kotlin
+ * hslider(200f, max = 100f, value = 50f, step = 5f) {
+ *   onChange { volumeLabel.text = "Volume: ${it.value}" }
+ * }
+ * ```
+ *
+ * @param length The slider's width, in pixels.
+ * @param min The value at the left end of the track.
+ * @param max The value at the right end of the track.
+ * @param value The starting value; clamped into the range.
+ * @param step The increment values snap to, or `0` for a continuous slider.
+ * @param style The style name to use, or `null` for `"default"`.
+ * @param tooltip The tooltip text, or `null` for none.
+ * @param block Configures the slider, usually registering an `onChange { }` handler.
+ * @return The new slider.
+ * @see vslider
+ */
+inline fun FlixelUiContainer.hslider(
+  length: Float,
+  min: Float = 0f,
+  max: Float = 1f,
+  value: Float = min,
+  step: Float = 0f,
+  style: String? = null,
+  tooltip: CharSequence? = null,
+  block: @FlixelUiDsl FlixelUiSlider.() -> Unit = {},
+): FlixelUiSlider {
+  val slider = FlixelUiSlider(length, min, max, value, false)
+  if (step != 0f) {
+    slider.setStep(step)
+  }
+  return place(slider, style, tooltip, block)
+}
+
+/**
+ * Adds a vertical slider, with the minimum at the bottom like a mixing-desk fader.
+ *
+ * ```kotlin
+ * vslider(120f, max = 10f, value = 5f) {
+ *   onChange { levelLabel.text = "Level: ${it.value}" }
+ * }
+ * ```
+ *
+ * @param length The slider's height, in pixels.
+ * @param min The value at the bottom of the track.
+ * @param max The value at the top of the track.
+ * @param value The starting value; clamped into the range.
+ * @param step The increment values snap to, or `0` for a continuous slider.
+ * @param style The style name to use, or `null` for `"default"`.
+ * @param tooltip The tooltip text, or `null` for none.
+ * @param block Configures the slider, usually registering an `onChange { }` handler.
+ * @return The new slider.
+ * @see hslider
+ */
+inline fun FlixelUiContainer.vslider(
+  length: Float,
+  min: Float = 0f,
+  max: Float = 1f,
+  value: Float = min,
+  step: Float = 0f,
+  style: String? = null,
+  tooltip: CharSequence? = null,
+  block: @FlixelUiDsl FlixelUiSlider.() -> Unit = {},
+): FlixelUiSlider {
+  val slider = FlixelUiSlider(length, min, max, value, true)
+  if (step != 0f) {
+    slider.setStep(step)
+  }
+  return place(slider, style, tooltip, block)
+}
+
+/**
+ * Adds a picture that loads [file].
+ *
+ * The picture takes the image's natural size unless both [width] and [height] are given, in which
+ * case [scaleMode] decides how the image fits that rectangle. Pictures ignore the pointer.
+ *
+ * @param file The image file, such as `Flixel.files.internal("ui/logo.png")`.
+ * @param width The fixed width in pixels, or `null` to use the natural size.
+ * @param height The fixed height in pixels, or `null` to use the natural size.
+ * @param scaleMode How the image fits the picture, or `null` to keep the default (fit).
+ * @param tooltip The tooltip text, or `null` for none.
+ * @param block Configures the picture, for example `setRegion(...)`.
+ * @return The new picture.
+ */
+inline fun FlixelUiContainer.picture(
+  file: FlixelFile,
+  width: Float? = null,
+  height: Float? = null,
+  scaleMode: FlixelUiPicture.ScaleMode? = null,
+  tooltip: CharSequence? = null,
+  block: @FlixelUiDsl FlixelUiPicture.() -> Unit = {},
+): FlixelUiPicture {
+  val picture =
+    if (width != null && height != null) FlixelUiPicture(file, width, height)
+    else FlixelUiPicture(file)
+  if (scaleMode != null) {
+    picture.setScaleMode(scaleMode)
+  }
+  return place(picture, null, tooltip, block)
+}
+
+/**
+ * Adds a picture that shows an already loaded [frame], such as a region of a texture atlas.
+ *
+ * The picture does not own the frame's texture. See the [FlixelFile] overload for how the size and
+ * [scaleMode] work.
+ *
+ * @param frame The frame to show.
+ * @param width The fixed width in pixels, or `null` to use the natural size.
+ * @param height The fixed height in pixels, or `null` to use the natural size.
+ * @param scaleMode How the image fits the picture, or `null` to keep the default (fit).
+ * @param tooltip The tooltip text, or `null` for none.
+ * @param block Configures the picture.
+ * @return The new picture.
+ */
+inline fun FlixelUiContainer.picture(
+  frame: FlixelFrame,
+  width: Float? = null,
+  height: Float? = null,
+  scaleMode: FlixelUiPicture.ScaleMode? = null,
+  tooltip: CharSequence? = null,
+  block: @FlixelUiDsl FlixelUiPicture.() -> Unit = {},
+): FlixelUiPicture {
+  val picture =
+    if (width != null && height != null) FlixelUiPicture(frame, width, height)
+    else FlixelUiPicture(frame)
+  if (scaleMode != null) {
+    picture.setScaleMode(scaleMode)
+  }
+  return place(picture, null, tooltip, block)
 }

@@ -29,8 +29,10 @@ import kotlin.test.assertSame
 import kotlin.test.assertTrue
 import org.flixelgdx.ui.FlixelUiButton
 import org.flixelgdx.ui.FlixelUiDisplay
+import org.flixelgdx.ui.graphics.FlixelUiColorFill
 import org.flixelgdx.ui.skin.FlixelUiButtonStyle
 import org.flixelgdx.ui.skin.FlixelUiLabelStyle
+import org.flixelgdx.ui.skin.FlixelUiSliderStyle
 import org.junit.jupiter.api.Test
 
 class FlixelUiSkinsTest {
@@ -49,6 +51,19 @@ class FlixelUiSkinsTest {
     assertEquals(32, skin.get<FlixelUiLabelStyle>("title").fontSize)
     assertTrue(skin.has<FlixelUiLabelStyle>("title"))
     assertFalse(skin.has<FlixelUiLabelStyle>())
+  }
+
+  @Test
+  fun `slider style is declared like the others`() {
+    val skin = uiSkin {
+      slider {
+        thumbWidth = 20f
+        track = track(colorFill(0x333333FF))
+      }
+    }
+    val style = skin.get<FlixelUiSliderStyle>()
+    assertEquals(20f, style.thumbWidth)
+    assertTrue(style.track is FlixelUiColorFill)
   }
 
   @Test
