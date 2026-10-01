@@ -142,7 +142,7 @@ ui = uiDisplay(FlixelUiDisplay.createHudCamera(), skin) {
     dropdown(160f) {
       items("Low", "Medium", "High") 
     }.bind(settings::quality)
-    slider(200f, max = 100f, step = 5f).bind(settings::volume) // Use vslider(...) for a vertical one.
+    hslider(200f, max = 100f, step = 5f).bind(settings::volume) // Use vslider(...) for a vertical one.
     picture(Flixel.files.internal("ui/logo.png"), 128f, 64f, FlixelUiPicture.ScaleMode.FIT)
     button("Quit", style = "danger") {
       onClick {

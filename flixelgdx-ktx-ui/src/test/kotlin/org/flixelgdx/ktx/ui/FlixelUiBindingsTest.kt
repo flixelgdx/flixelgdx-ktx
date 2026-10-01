@@ -83,7 +83,7 @@ class FlixelUiBindingsTest {
     val ui = testDisplay()
     var signals = 0
     ui.build {
-      val volume = slider(100f).bind(settings::volume)
+      val volume = hslider(100f).bind(settings::volume)
       assertEquals(0.5f, volume.value)
       volume.onChange.add { signals++ }
       volume.setValue(0.75f)

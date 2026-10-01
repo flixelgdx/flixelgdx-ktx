@@ -212,6 +212,9 @@ class FlixelUiSkinScope(val skin: FlixelUiSkin) {
   /**
    * Declares a slider style.
    *
+   * One style serves both [hslider] and [vslider] sliders. The thumb sizes are the same either way,
+   * and the track thickness is measured across the slider's axis.
+   *
    * @param name The style name, `"default"` unless given.
    * @param block Sets the style's fields.
    * @return The stored style.

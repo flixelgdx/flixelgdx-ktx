@@ -397,37 +397,36 @@ inline fun FlixelUiContainer.textBox(
 }
 
 /**
- * Adds a horizontal slider.
+ * Adds a horizontal slider, with the minimum on the left.
  *
  * ```kotlin
- * slider(200f, max = 100f, value = 50f, step = 5f) {
+ * hslider(200f, max = 100f, value = 50f, step = 5f) {
  *   onChange { volumeLabel.text = "Volume: ${it.value}" }
  * }
  * ```
  *
- * @param length The slider's length along its axis, in pixels.
- * @param min The value at the start of the track.
- * @param max The value at the end of the track.
+ * @param length The slider's width, in pixels.
+ * @param min The value at the left end of the track.
+ * @param max The value at the right end of the track.
  * @param value The starting value; clamped into the range.
  * @param step The increment values snap to, or `0` for a continuous slider.
- * @param vertical Whether the slider runs top to bottom instead of left to right.
  * @param style The style name to use, or `null` for `"default"`.
  * @param tooltip The tooltip text, or `null` for none.
  * @param block Configures the slider, usually registering an `onChange { }` handler.
  * @return The new slider.
+ * @see vslider
  */
-inline fun FlixelUiContainer.slider(
+inline fun FlixelUiContainer.hslider(
   length: Float,
   min: Float = 0f,
   max: Float = 1f,
   value: Float = min,
   step: Float = 0f,
-  vertical: Boolean = false,
   style: String? = null,
   tooltip: CharSequence? = null,
   block: @FlixelUiDsl FlixelUiSlider.() -> Unit = {},
 ): FlixelUiSlider {
-  val slider = FlixelUiSlider(length, min, max, value, vertical)
+  val slider = FlixelUiSlider(length, min, max, value, false)
   if (step != 0f) {
     slider.setStep(step)
   }
@@ -435,17 +434,24 @@ inline fun FlixelUiContainer.slider(
 }
 
 /**
- * Adds a vertical slider; this is [slider] with `vertical = true`.
+ * Adds a vertical slider, with the minimum at the bottom like a mixing-desk fader.
  *
- * @param length The slider's length along its axis, in pixels.
- * @param min The value at the top of the track.
- * @param max The value at the bottom of the track.
+ * ```kotlin
+ * vslider(120f, max = 10f, value = 5f) {
+ *   onChange { levelLabel.text = "Level: ${it.value}" }
+ * }
+ * ```
+ *
+ * @param length The slider's height, in pixels.
+ * @param min The value at the bottom of the track.
+ * @param max The value at the top of the track.
  * @param value The starting value; clamped into the range.
  * @param step The increment values snap to, or `0` for a continuous slider.
  * @param style The style name to use, or `null` for `"default"`.
  * @param tooltip The tooltip text, or `null` for none.
  * @param block Configures the slider, usually registering an `onChange { }` handler.
  * @return The new slider.
+ * @see hslider
  */
 inline fun FlixelUiContainer.vslider(
   length: Float,
@@ -456,7 +462,13 @@ inline fun FlixelUiContainer.vslider(
   style: String? = null,
   tooltip: CharSequence? = null,
   block: @FlixelUiDsl FlixelUiSlider.() -> Unit = {},
-): FlixelUiSlider = slider(length, min, max, value, step, true, style, tooltip, block)
+): FlixelUiSlider {
+  val slider = FlixelUiSlider(length, min, max, value, true)
+  if (step != 0f) {
+    slider.setStep(step)
+  }
+  return place(slider, style, tooltip, block)
+}
 
 /**
  * Adds a picture that loads [file].

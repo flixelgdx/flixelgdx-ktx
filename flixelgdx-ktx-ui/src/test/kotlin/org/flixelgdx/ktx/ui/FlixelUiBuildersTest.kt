@@ -148,7 +148,7 @@ class FlixelUiBuildersTest {
     lateinit var vertical: FlixelUiSlider
     ui.build {
       horizontal =
-        slider(200f, min = 0f, max = 100f, value = 50f, step = 10f, tooltip = "Volume") {
+        hslider(200f, min = 0f, max = 100f, value = 50f, step = 10f, tooltip = "Volume") {
           onChange { changes++ }
         }
       vertical = vslider(80f, max = 10f, value = 2f)
