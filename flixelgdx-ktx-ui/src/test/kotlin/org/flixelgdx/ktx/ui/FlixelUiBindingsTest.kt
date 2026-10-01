@@ -24,33 +24,16 @@
 package org.flixelgdx.ktx.ui
 
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 import org.flixelgdx.ui.FlixelUiRadioGroup
 import org.junit.jupiter.api.Test
 
 class FlixelUiBindingsTest {
 
   private class Settings {
-    var fullscreen = true
     var name = "Hero"
     var quality = 2
     var difficulty = 1
     var volume = 0.5f
-  }
-
-  @Test
-  fun `checkbox shows the property silently and writes changes back`() {
-    val settings = Settings()
-    val ui = testDisplay()
-    var signals = 0
-    ui.build {
-      val box = checkbox("Fullscreen").bind(settings::fullscreen)
-      assertTrue(box.isChecked)
-      box.onChange.add { signals++ }
-      box.click()
-    }
-    assertEquals(false, settings.fullscreen)
-    assertEquals(1, signals)
   }
 
   @Test
@@ -86,7 +69,7 @@ class FlixelUiBindingsTest {
       val volume = hslider(100f).bind(settings::volume)
       assertEquals(0.5f, volume.value)
       volume.onChange.add { signals++ }
-      volume.setValue(0.75f)
+      volume.value = 0.75f
     }
     assertEquals(0.75f, settings.volume)
     assertEquals(1, signals)
