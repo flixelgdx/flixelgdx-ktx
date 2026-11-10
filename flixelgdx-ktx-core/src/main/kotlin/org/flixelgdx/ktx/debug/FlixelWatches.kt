@@ -47,7 +47,7 @@ import org.flixelgdx.debug.feeds.FlixelDebugWatches
 inline operator fun FlixelDebugWatches.invoke(block: FlixelDebugWatches.() -> Unit) = block()
 
 /**
- * Watches a `Int` value under [name].
+ * Watches an `Int` value under [name].
  *
  * @param name The label shown next to the value.
  * @param getter Reads the current value. It runs often, so keep it cheap and allocation free.
