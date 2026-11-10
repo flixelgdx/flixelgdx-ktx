@@ -1,5 +1,6 @@
 import com.vanniktech.maven.publish.SonatypeHost
 import io.gitlab.arturbosch.detekt.Detekt
+import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
 
 /**
  * Convention for FlixelGDX KTX Kotlin library modules.
@@ -78,12 +79,17 @@ detekt {
 
 tasks.withType<Detekt>().configureEach {
   // detekt fails the build on issues by default (ignoreFailures = false).
+  // detekt 1.23 only accepts JVM targets up to 22 and would otherwise inherit the Java 25
+  // toolchain's target. The target only affects detekt's type resolution, not the build output.
+  jvmTarget = "22"
   reports {
     html.required = true
     xml.required = false
     txt.required = false
   }
 }
+
+tasks.withType<DetektCreateBaselineTask>().configureEach { jvmTarget = "22" }
 
 // JitPack rewrites Gradle module metadata and drops classifier compatibility data, causing
 // consumers to resolve wrong variants. POMs stay correct; omit .module files so metadata is
