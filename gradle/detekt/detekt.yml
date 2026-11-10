@@ -18,28 +18,28 @@ comments:
     active: true
     excludes: ["**/test/**", "**/Test*.kt", "**/*Test.kt"]
   # Discourage block comments in favor of KDoc or end-of-line comments.
-  CommentOverPrivateFunction:
+  DocumentationOverPrivateFunction:
     active: false
-  CommentOverPrivateProperty:
+  DocumentationOverPrivateProperty:
     active: false
 
 complexity:
   active: true
   # Reasonable ceiling for cyclomatic complexity in extension functions.
   CyclomaticComplexMethod:
-    threshold: 15
+    allowedComplexity: 14
   LongMethod:
-    threshold: 60
+    allowedLines: 60
   # DSL builders (for example the tween builder) legitimately expose many named,
   # defaulted parameters so a call reads top to bottom.
   LongParameterList:
-    functionThreshold: 12
-    constructorThreshold: 8
+    allowedFunctionParameters: 11
+    allowedConstructorParameters: 7
   # The primitive-typed sugar files carry one family of extensions per primitive type,
   # so a single file legitimately holds dozens of top-level functions.
   TooManyFunctions:
-    thresholdInFiles: 60
-    thresholdInClasses: 20
+    allowedFunctionsPerFile: 60
+    allowedFunctionsPerClass: 20
 
 naming:
   active: true
@@ -53,7 +53,7 @@ style:
   # Kotlin extension libraries should prefer expression bodies where they fit.
   UseCheckOrError:
     active: true
-  UnusedImports:
+  UnusedImport:
     active: true
   # FlixelRect and FlixelColor destructure into four components (x, y, w, h) / (r, g, b, a).
   DestructuringDeclarationWithTooManyEntries:
