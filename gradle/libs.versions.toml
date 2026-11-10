@@ -5,8 +5,6 @@
 detekt = "1.23.7"
 dokka = "1.9.20"
 flixelgdx = "0.7.2"
-# FlixelGDX UI is released separately and can lag behind the framework.
-flixelgdx-ui = "0.7.0"
 junit = "5.10.3"
 kotlin = "2.3.21"
 spotless = "6.25.0"
@@ -16,7 +14,7 @@ vanniktech = "0.29.0"
 detekt-gradle-plugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 dokka-gradle-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 flixelgdx-core = { module = "org.flixelgdx:flixelgdx-core", version.ref = "flixelgdx" }
-flixelgdx-ui = { module = "org.flixelgdx:flixelgdx-ui", version.ref = "flixelgdx-ui" }
+flixelgdx-ui = { module = "org.flixelgdx:flixelgdx-ui", version.ref = "flixelgdx" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
