@@ -1,3 +1,5 @@
+import com.vanniktech.maven.publish.JavadocJar
+import com.vanniktech.maven.publish.KotlinJvm
 import com.vanniktech.maven.publish.SonatypeHost
 import dev.detekt.gradle.Detekt
 
@@ -102,6 +104,12 @@ mavenPublishing {
   if (hasSigning) {
     signAllPublications()
   }
+
+  // Vanniktech 0.29 defaults to the Dokka V1 dokkaHtml task for the javadoc jar, which Dokka 2
+  // refuses to run. Point it at the V2 HTML publication task instead.
+  configure(
+    KotlinJvm(javadocJar = JavadocJar.Dokka("dokkaGeneratePublicationHtml"), sourcesJar = true)
+  )
 
   coordinates(project.group as String, project.name, project.version as String)
 

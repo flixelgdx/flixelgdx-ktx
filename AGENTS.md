@@ -146,7 +146,7 @@ Before considering a coding task finished:
 1. Run the unit tests: `./gradlew test`
 2. Apply formatting: `./gradlew spotlessApply`
 3. Run static analysis: `./gradlew detekt`
-4. Verify KDoc builds: `./gradlew dokkaHtml`
+4. Verify KDoc builds: `./gradlew dokkaGenerate`
 
 Fix any failures before considering the task complete.
 

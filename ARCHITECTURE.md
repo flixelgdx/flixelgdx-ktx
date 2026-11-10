@@ -64,7 +64,7 @@ FlixelGDX KTX uses **Gradle** with **Kotlin DSL**.
 | `./gradlew spotlessApply`                | Auto-format all Kotlin source with ktfmt (Google style).                           |
 | `./gradlew spotlessCheck`                | Check formatting without modifying files (used in CI).                             |
 | `./gradlew detekt`                       | Run detekt static analysis across all modules.                                     |
-| `./gradlew dokkaHtml`                    | Generate HTML API docs.                                                            |
+| `./gradlew dokkaGenerate`                | Generate HTML API docs.                                                            |
 | `./gradlew publishToMavenLocal`          | Publish every module to your local Maven repository for testing in a game project. |
 
 ---
