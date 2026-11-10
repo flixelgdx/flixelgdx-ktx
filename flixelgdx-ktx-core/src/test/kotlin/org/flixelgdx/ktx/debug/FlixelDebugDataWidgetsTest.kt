@@ -72,7 +72,7 @@ class FlixelDebugDataWidgetsTest {
 
     val changed =
       tree.nodes {
-        node(1, 0, "Player") {
+        node(1, -1, "Player") {
           tone(FlixelDebugTone.ACCENT).badge("agent", FlixelDebugTone.WARNING)
         }
         node(2, 1, "Weapon") { detail("Pistol") }

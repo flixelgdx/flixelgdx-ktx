@@ -115,13 +115,13 @@ inline fun FlixelDebugTree.nodes(block: FlixelDebugTree.() -> Unit): Boolean {
  *
  * ```kotlin
  * tree.nodes {
- *   node(1, 0, "Player") { badge("agent", FlixelDebugTone.ACCENT) }
+ *   node(1, -1, "Player") { badge("agent", FlixelDebugTone.ACCENT) }
  *   node(2, 1, "Weapon") { detail("Pistol") }
  * }
  * ```
  *
  * @param id The id reported back when the node is selected or activated.
- * @param parent The id of the parent node, or `0` for a top-level node.
+ * @param parent The id of the parent node, or `-1` for a top-level node.
  * @param text The node's label.
  * @param block Sets the node's detail, tone, and badges.
  */
