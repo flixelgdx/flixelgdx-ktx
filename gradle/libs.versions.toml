@@ -7,7 +7,7 @@ dokka = "2.3.0"
 flixelgdx = "0.7.2"
 junit = "5.10.3"
 kotlin = "2.3.21"
-spotless = "6.25.0"
+spotless = "8.11.0"
 vanniktech = "0.29.0"
 
 [libraries]
