@@ -108,7 +108,7 @@ Before submitting a pull request, make sure all of the following pass:
 ./gradlew detekt
 
 # Generate Dokka HTML docs to catch broken KDoc links or malformed tags.
-./gradlew dokkaHtml
+./gradlew dokkaGenerate
 ```
 
 ---

@@ -24,7 +24,7 @@ Explain *what* was changed and *why*. Link to any relevant issues.
 - [ ] I have commented my code, particularly in hard-to-understand areas (if any code was added or changed).
 - [ ] Spotless formatting check passes (`./gradlew spotlessCheck`).
 - [ ] detekt static analysis passes (`./gradlew detekt`).
-- [ ] Dokka HTML generation succeeds (`./gradlew dokkaHtml`).
+- [ ] Dokka HTML generation succeeds (`./gradlew dokkaGenerate`).
 - [ ] All unit tests pass (`./gradlew :flixelgdx-ktx-core:test :flixelgdx-ktx-ui:test`).
 - [ ] I have updated the documentation accordingly (if applicable).
 - [ ] I have added tests that prove my fix is effective or that my feature works (if any code was added or changed).

@@ -49,10 +49,10 @@ Run all of the following before opening a pull request:
 ./gradlew detekt
 
 # KDoc generation (catches broken links and malformed tags).
-./gradlew dokkaHtml
+./gradlew dokkaGenerate
 ```
 
-CI runs `spotlessCheck`, `detekt`, both test tasks, and `dokkaHtml`. A PR will not be merged until
+CI runs `spotlessCheck`, `detekt`, both test tasks, and `dokkaGenerate`. A PR will not be merged until
 all of those pass.
 
 ---
