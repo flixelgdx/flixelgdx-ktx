@@ -25,6 +25,7 @@ package org.flixelgdx.ktx.ui
 
 import org.flixelgdx.Flixel
 import org.flixelgdx.FlixelCamera
+import org.flixelgdx.backend.desktop.file.FlixelJvmFiles
 import org.flixelgdx.ui.FlixelUiDisplay
 import org.flixelgdx.ui.skin.FlixelTextBoxStyle
 import org.flixelgdx.ui.skin.FlixelUiButtonStyle
@@ -37,8 +38,16 @@ import org.flixelgdx.ui.skin.FlixelUiRadioButtonStyle
 import org.flixelgdx.ui.skin.FlixelUiSkin
 import org.flixelgdx.ui.skin.FlixelUiSliderStyle
 
-/** Prepares the headless framework state the UI needs and returns a fresh camera. */
+/**
+ * Prepares the headless framework state the UI needs and returns a fresh camera.
+ *
+ * Installs the real java.io file backend on [Flixel.files] so the framework can load its packaged
+ * default font. Without it, text never lays out, and text box caret math fails.
+ */
 fun headlessCamera(): FlixelCamera {
+  if (Flixel.files !is FlixelJvmFiles) {
+    Flixel.files = FlixelJvmFiles()
+  }
   Flixel.cameras.clear()
   val camera = FlixelCamera(640, 360)
   Flixel.cameras.add(camera)
