@@ -23,16 +23,13 @@
  */
 package org.flixelgdx.ktx.ui.async
 
-import org.flixelgdx.Flixel
-import org.flixelgdx.FlixelCamera
+import org.flixelgdx.ktx.ui.headlessCamera
 import org.flixelgdx.ktx.ui.uiSkin
 import org.flixelgdx.ui.FlixelUiDisplay
 
 /** A headless display with plain "default" styles for the widgets the async tests build. */
 fun testDisplay(): FlixelUiDisplay {
-  Flixel.cameras.clear()
-  val camera = FlixelCamera(640, 360)
-  Flixel.cameras.add(camera)
+  val camera = headlessCamera()
   val skin = uiSkin {
     button {}
     label {}
