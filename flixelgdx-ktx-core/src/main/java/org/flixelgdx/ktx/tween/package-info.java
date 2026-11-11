@@ -20,8 +20,13 @@
 /// Use `then` with a trailing lambda to start a follow-up tween when the previous one finishes:
 ///
 /// ```kotlin
-/// sprite.tween(duration = 0.5f) { goal(sprite::getX, 300f, sprite::setX) }
-///   .then { sprite.tween(duration = 0.5f) { goal(sprite::getY, 200f, sprite::setY) } }
+/// sprite.tween(duration = 0.5f) {
+///   goal(sprite::getX, 300f, sprite::setX)
+/// }.then {
+///   sprite.tween(duration = 0.5f) {
+///     goal(sprite::getY, 200f, sprite::setY)
+///   }
+/// }
 /// ```
 ///
 /// ## Looping

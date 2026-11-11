@@ -14,8 +14,12 @@
 ///   vstack(spacing = 8f) {
 ///     anchor(FlixelAlign.CENTER)
 ///     label("Main Menu", style = "title")
-///     button("Play") { onClick { startGame() } }
-///     button("Quit", style = "danger") { onClick { exitGame() } }
+///     button("Play") {
+///       onClick { startGame() }
+///     }
+///     button("Quit", style = "danger") {
+///       onClick { exitGame() }
+///     }
 ///   }
 /// }
 /// ```

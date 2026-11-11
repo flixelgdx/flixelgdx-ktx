@@ -32,8 +32,12 @@
 ///   val quit = ui.dialog(300f, 160f, dismissed = false) { finish ->
 ///     label("Really quit?")
 ///     hstack(spacing = 8f) {
-///       button("Yes") { onClick { finish(true) } }
-///       button("No") { onClick { finish(false) } }
+///       button("Yes") {
+///         onClick { finish(true) }
+///       }
+///       button("No") {
+///         onClick { finish(false) }
+///       }
 ///     }
 ///   }
 ///   if (quit) exitGame()
