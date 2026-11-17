@@ -230,6 +230,20 @@ dependencies {
 
 ---
 
+## Install with flxgdx
+
+If you use the `flxgdx` command-line tool, one command adds the extension to your Kotlin game:
+
+```sh
+flxgdx add library flixelgdx/flixelgdx-ktx
+```
+
+It adds `flixelgdx-ktx-core` to your core module. The `flixelgdx-ktx-ui` artifact is added only while FlixelGDX UI is
+installed, and it is added or removed automatically when you install or remove FlixelGDX UI later. The manifest that makes
+this work is [`flxgdx.yml`](flxgdx.yml).
+
+---
+
 ## Project navigation
 
 - **[Contributing Guide](CONTRIBUTING.md)**: Coding standards, PR requirements, and how to contribute.
