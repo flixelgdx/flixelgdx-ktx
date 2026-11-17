@@ -235,7 +235,7 @@ dependencies {
 If you use the `flxgdx` command-line tool, one command adds the extension to your Kotlin game:
 
 ```sh
-flxgdx add library flixelgdx/flixelgdx-ktx
+flxgdx add library --repo flixelgdx/flixelgdx-ktx
 ```
 
 It adds `flixelgdx-ktx-core` to your core module. The `flixelgdx-ktx-ui` artifact is added only while FlixelGDX UI is
