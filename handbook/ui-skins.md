@@ -72,7 +72,8 @@ Inside `uiSkin { }`, each widget type has a function that creates its style, run
 | `tooltip`    | `FlixelUiTooltipStyle`     | Tooltips                      |
 
 Each takes an optional name, `"default"` when left out (the `DEFAULT_STYLE` constant). Widgets use `"default"` until
-you give them another style name. Inside the block, `this` is the style, so you set its fields directly; the fields
+you give them another style name. A widget looks its style up when it is added to a display, and throws an
+`IllegalArgumentException` if the skin has no style of its type with that name. Inside the block, `this` is the style, so you set its fields directly; the fields
 themselves are documented in each style class.
 
 One slider style serves both directions: the thumb size is the same either way, and the track thickness is measured
@@ -159,11 +160,12 @@ Widgets already on a display do not notice new styles by themselves. Set the ski
 
 ## Check your understanding
 
-1. A widget built with `style = "danger"` looks plain. What should you check first?
+1. Building `button("Delete", style = "danger")` throws an `IllegalArgumentException`. What is missing?
 2. Why wrap `nineSlice(...)` in `track(...)`?
 3. Why does `colorFill` take a `Long`?
 
-(Answers: that the skin has a style of that widget's type named `"danger"`, for example with
+(Answers: a button style named `"danger"` in the skin, since a widget looks up its style when it is added to a
+display and throws when the skin has none; declare one with `button("danger") { }`, or check with
 `skin.has<FlixelUiButtonStyle>("danger")`; so the skin releases the loaded image when it is destroyed; so packed colors
 with the top bit set, such as `0xAA2222FF`, can be written without converting them.)
 
