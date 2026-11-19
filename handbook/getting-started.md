@@ -24,15 +24,16 @@ rules that keep Kotlin code as fast as the Java it replaces.
 
 ## Choosing modules
 
-The extension ships as two modules. Pick the ones that match what your game uses:
+The extension ships as three modules. Pick the ones that match what your game uses:
 
 | Module                | Add it when                                 | What it brings in                                     |
 |-----------------------|---------------------------------------------|-------------------------------------------------------|
 | `flixelgdx-ktx-core`  | Always.                                     | The core extensions, plus FlixelGDX core itself.      |
 | `flixelgdx-ktx-ui`    | Your game uses the FlixelGDX UI extension.  | The UI extensions, plus `flixelgdx-ktx-core` and FlixelGDX UI. |
+| `flixelgdx-ktx-video` | Your game uses the FlixelGDX Video extension. | The video coroutine helpers, plus `flixelgdx-ktx-core` and FlixelGDX Video's core module. |
 
-Each module pulls in what it wraps, so you do not need to list `flixelgdx-core` or `flixelgdx-ui` again for the
-extension's sake.
+Each module pulls in what it wraps, so you do not need to list `flixelgdx-core`, `flixelgdx-ui`, or
+`flixelgdx-video-core` again for the extension's sake.
 
 ## Installing with Gradle
 
@@ -48,6 +49,7 @@ flixelgdx-ktx = "<flixelgdx-version>"
 [libraries]
 flixelgdx-ktx-core = { module = "org.flixelgdx:flixelgdx-ktx-core", version.ref = "flixelgdx-ktx" }
 flixelgdx-ktx-ui = { module = "org.flixelgdx:flixelgdx-ktx-ui", version.ref = "flixelgdx-ktx" }
+flixelgdx-ktx-video = { module = "org.flixelgdx:flixelgdx-ktx-video", version.ref = "flixelgdx-ktx" }
 ```
 
 ```kotlin
@@ -55,6 +57,7 @@ flixelgdx-ktx-ui = { module = "org.flixelgdx:flixelgdx-ktx-ui", version.ref = "f
 dependencies {
   implementation(libs.flixelgdx.ktx.core)
   implementation(libs.flixelgdx.ktx.ui) // Only if you use FlixelGDX UI.
+  implementation(libs.flixelgdx.ktx.video) // Only if you use FlixelGDX Video.
 }
 ```
 
@@ -70,6 +73,7 @@ repositories {
 dependencies {
   implementation("org.flixelgdx:flixelgdx-ktx-core:<flixelgdx-version>")
   implementation("org.flixelgdx:flixelgdx-ktx-ui:<flixelgdx-version>") // Only if you use FlixelGDX UI.
+  implementation("org.flixelgdx:flixelgdx-ktx-video:<flixelgdx-version>") // Only if you use FlixelGDX Video.
 }
 ```
 
@@ -86,6 +90,13 @@ dependencies {
 <dependency>
   <groupId>org.flixelgdx</groupId>
   <artifactId>flixelgdx-ktx-ui</artifactId>
+  <version>FLIXELGDX-VERSION</version>
+</dependency>
+
+<!-- Only if you use FlixelGDX Video. -->
+<dependency>
+  <groupId>org.flixelgdx</groupId>
+  <artifactId>flixelgdx-ktx-video</artifactId>
   <version>FLIXELGDX-VERSION</version>
 </dependency>
 ```
@@ -108,6 +119,7 @@ when it is imported, so the first thing to know is where each feature lives:
 | `org.flixelgdx.ktx.debug`        | core   | `debugOnly { }`, watches, console, inspector, and panel builders.    | [Debugging Tools](debugging.md) |
 | `org.flixelgdx.ktx.ui`           | ui     | Widget builders, skins, bindings, filters, and widget tweens.        | [Building UIs](ui-building.md) |
 | `org.flixelgdx.ktx.ui.async`     | ui     | `awaitClick()`, `dialog(...)`, and the other widget awaits.          | [UI Events](ui-interaction.md) |
+| `org.flixelgdx.ktx.video`        | video  | `await()`, `playAndAwait()`, and `awaitReady()` for videos.          | [Videos](video.md) |
 
 Your IDE offers to import most of these as you type. **Operators are the exception**: when you write `inventory +=
 potion` and the operator is not imported, the IDE may only report an error instead of suggesting the fix. If an

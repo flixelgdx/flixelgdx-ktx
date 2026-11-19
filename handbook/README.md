@@ -49,7 +49,7 @@ The `flixelgdx-ktx-core` module. Every game that uses the extension has it.
 | 1 | [Getting Started](getting-started.md) | Installing the modules, the package map, imports, and the house rules. |
 | 2 | [Collections and Pools](collections.md) | `flixelArrayOf(...)` and friends, `+=` and `-=`, map indexing, loops, and one-line pools. |
 | 3 | [Signals and Groups](signals-and-groups.md) | Adding listeners with `+=`, firing a signal like a function, and treating groups like lists. |
-| 4 | [Tweens and Animation](tweens-and-animation.md) | The `tween(...)` builder, chaining with `then`, and the `animations { }` block. |
+| 4 | [Tweens and Animation](tweens-and-animation.md) | The `tween(...)` builder, chaining with `then`, and registering clips with `animations { }`. |
 | 5 | [Math and Colors](math-and-colors.md) | Vector and rectangle operators, destructuring, color builders, and easing ranges. |
 | 6 | [Saving with Property Delegates](saving.md) | `var volume by save(1f)`, and when the data actually reaches the disk. |
 | 7 | [Coroutines](coroutines.md) | `launch`, `delay`, awaiting tweens, signals, and animations, cancellation, and custom awaits. |
@@ -64,6 +64,14 @@ The `flixelgdx-ktx-ui` module, for games that use FlixelGDX UI.
 | 9 | [Building UIs](ui-building.md) | `uiDisplay { }`, stacks, every widget builder, containers as lists, and modals. |
 | 10 | [Skins](ui-skins.md) | The `uiSkin { }` block, backgrounds, and type-safe style lookups. |
 | 11 | [UI Events, Bindings, and Animation](ui-interaction.md) | Event handlers, two-way bindings, text filters, widget tweens, and dialogs as coroutines. |
+
+## Part 3: The video extensions
+
+The `flixelgdx-ktx-video` module, for games that use FlixelGDX Video.
+
+| # | Guide | What you will learn |
+|---|-------|---------------------|
+| 12 | [Videos](video.md) | Waiting for a video to finish or to show its first frame, and what canceling does. |
 
 ## Appendices
 

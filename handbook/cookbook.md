@@ -13,12 +13,13 @@ Short answers to common questions, grouped by topic. Each answer links to the gu
 7. [Coroutines](#coroutines)
 8. [Debugging](#debugging)
 9. [UI](#ui)
+10. [Video](#video)
 
 ## Setup
 
 **...add the extension to my game?**
 `implementation("org.flixelgdx:flixelgdx-ktx-core:<flixelgdx-version>")`, plus `flixelgdx-ktx-ui` if you use FlixelGDX
-UI. ([Getting Started](getting-started.md#installing-with-gradle))
+UI and `flixelgdx-ktx-video` if you use FlixelGDX Video. ([Getting Started](getting-started.md#installing-with-gradle))
 
 **...fix "operator does not exist" on `+=`?**
 Import the operator from the package of the type you use it on, such as `org.flixelgdx.ktx.collections.plusAssign`.
@@ -191,3 +192,14 @@ Put the cleanup in a `finally` block. ([Coroutines](coroutines.md#canceling))
 
 **...make the UI react to the mouse?**
 Feed a `FlixelUiPointer` from your `update()`; the UI never reads input itself. ([Building UIs](ui-building.md#the-ui-never-reads-input))
+
+## Video
+
+**...wait for a video to finish?**
+`launch { video.play(); video.await(); next() }` ([Videos](video.md#waiting-for-a-video-to-finish))
+
+**...play a cutscene and continue afterwards?**
+`launch { cutscene.playAndAwait(); startLevel() }` ([Videos](video.md#playing-and-waiting-in-one-call))
+
+**...center a video at its own size?**
+`launch { video.play(); video.awaitReady(); video.screenCenter() }` ([Videos](video.md#waiting-for-the-first-frame))

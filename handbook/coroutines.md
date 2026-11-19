@@ -3,7 +3,7 @@
 Cutscenes, tutorials, and attack patterns are sequences: do this, wait, do that, wait until the player clicks. Written
 with callbacks, a sequence is scattered across many functions. Written as a coroutine, it reads top to bottom. This
 guide covers starting coroutines, waiting for time, tweens, signals, and animations, canceling them, and writing your
-own waits.
+own waits. Games that use FlixelGDX Video can wait on videos too; see [Videos](video.md).
 
 ## Table of contents
 

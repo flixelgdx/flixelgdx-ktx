@@ -235,4 +235,4 @@ val slot: Int = ui.dialog(320f, 200f, dismissed = -1) { finish ->
 zero alpha still receives interactions, so hide or remove it in `onComplete`; the "Yes" button closes the modal some
 other way, such as calling `close()` directly, instead of calling `finish(true)`.)
 
-**Next:** ["How Do I...?" Cookbook](cookbook.md)
+**Next:** [Videos](video.md)
