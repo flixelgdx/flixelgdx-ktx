@@ -21,6 +21,9 @@
 FlixelGDX KTX provides a multitude of tooling, including syntatic sugar, DSLs, out-of-the-box support for beloved
 Kotlin features like coroutines and property delegates, and so much more!
 
+The tour below shows the highlights. For a complete, beginner-friendly guide to every feature, read the
+[handbook](handbook/README.md).
+
 ### Property delegates
 
 The extension provides a set of delegates that integrate nicely with the framework's API.
@@ -232,6 +235,7 @@ dependencies {
 
 ## Project navigation
 
+- **[Handbook](handbook/README.md)**: The complete user guide, from installation to every part of the API.
 - **[Contributing Guide](CONTRIBUTING.md)**: Coding standards, PR requirements, and how to contribute.
 - **[Project Structure](ARCHITECTURE.md)**: The multi-module layout and how Gradle is used.
 - **[Compiling & Testing](COMPILING.md)**: How to build the framework and test it as a dependency in your own projects.
