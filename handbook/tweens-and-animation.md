@@ -69,7 +69,8 @@ title.tween(duration = 0.8f, type = FlixelTweenType.PINGPONG, ease = FlixelEase:
 
 `goal(getter, to, setter)` eases one `Float` property toward `to`:
 
-- The **getter** is read **once**, when the tween begins, to find the starting value.
+- The **getter** is read **once**, when `tween(...)` is called, to find the starting value. With a `startDelay`, it
+  is still read at the call, not when the delay ends.
 - The **setter** is called on every update with the new value.
 - Function references such as `sprite::getX` and `sprite::setX` fit both. They map straight to the framework's
   primitive `float` interfaces, so updating the tween never boxes a number.
@@ -184,8 +185,9 @@ into an array.
 
 - **Tweening a property that something else also sets every frame.** If your `update()` sets the sprite's X, the
   tween and your code fight, and the sprite jitters. Tween values nothing else touches.
-- **Expecting the getter to be read every frame.** The starting value is read once, when the tween begins. Changing
-  the property afterwards does not change where the tween is heading or where it came from.
+- **Expecting the getter to be read every frame.** The starting value is read once, when `tween(...)` is called, even
+  if the tween has a `startDelay`. Changing the property afterwards does not change where the tween is heading or
+  where it came from.
 - **Waiting on a looping tween.** `then { }` and `await()` never fire for `LOOPING` or `PINGPONG` tweens.
 - **Using `addByIndices` on a plain sprite sheet.** It matches atlas frame *names*, and a sheet cut into a grid has
   none, so no clip is registered. Use `add` with frame numbers instead.
