@@ -107,9 +107,10 @@ suspend fun <T> FlixelSignal<T>.awaitOnce(): T = suspendCancellable { cont ->
  * Example:
  * ```
  * launch {
- *   sprite.animation.play("attack")
- *   sprite.animation.await("attack")
- *   sprite.animation.play("idle")
+ *   val animation = sprite.animation ?: return@launch
+ *   animation.play("attack")
+ *   animation.await("attack")
+ *   animation.play("idle")
  * }
  * ```
  *

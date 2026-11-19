@@ -32,19 +32,22 @@ import org.flixelgdx.math.FlixelRect
  * destructuring helpers already defined in `FlixelRects.kt`.
  *
  * As with the vector operators in `FlixelVectors.kt`, there are two families:
- * - Compound-assignment operators (`+=`, `-=`) translate the rectangle's position in place and
- *   allocate nothing. Prefer these in per-frame code.
+ * - Compound-assignment operators (`+=`, `-=`) translate the rectangle's position in place instead
+ *   of creating a new rectangle. They still take a [Pair], and writing `rect += dx to dy` creates
+ *   that pair and boxes both floats, so in per-frame code prefer `rect.x += dx` and `rect.y += dy`.
  * - Binary operators (`+`, `-`) each return a new [FlixelRect]. They read cleanly but allocate, so
  *   avoid them in update loops.
  */
 
 /**
- * Translates this rectangle in place by moving its top-left corner by ([dx], [dy]).
+ * Translates this rectangle in place by moving its top-left corner by ([other].first,
+ * [other].second).
  *
- * The width and height are unchanged. Allocates nothing.
+ * The width and height are unchanged. No new rectangle is created, but building the [Pair] (for
+ * example with `dx to dy`) allocates it and boxes both floats, so per-frame code should change
+ * [FlixelRect.x] and [FlixelRect.y] directly instead.
  *
- * @param dx Horizontal delta.
- * @param dy Vertical delta.
+ * @param other A pair of (dx, dy) deltas to add.
  */
 operator fun FlixelRect.plusAssign(other: Pair<Float, Float>) {
   x += other.first
@@ -52,9 +55,11 @@ operator fun FlixelRect.plusAssign(other: Pair<Float, Float>) {
 }
 
 /**
- * Translates this rectangle in place by moving its top-left corner by the negation of ([dx], [dy]).
+ * Translates this rectangle in place by moving its top-left corner by the negation of
+ * ([other].first, [other].second).
  *
- * Allocates nothing.
+ * No new rectangle is created, but building the [Pair] allocates it and boxes both floats, so
+ * per-frame code should change [FlixelRect.x] and [FlixelRect.y] directly instead.
  *
  * @param other A pair of (dx, dy) deltas to subtract.
  */
@@ -66,7 +71,8 @@ operator fun FlixelRect.minusAssign(other: Pair<Float, Float>) {
 /**
  * Returns a new rectangle whose position is this one shifted by ([other].first, [other].second).
  *
- * This allocates a new [FlixelRect]; use [plusAssign] in per-frame code.
+ * This allocates a new [FlixelRect]; in per-frame code, change [FlixelRect.x] and [FlixelRect.y]
+ * directly instead.
  *
  * @param other A pair of (dx, dy) deltas.
  * @return A new translated rectangle.
@@ -78,7 +84,8 @@ operator fun FlixelRect.plus(other: Pair<Float, Float>): FlixelRect =
  * Returns a new rectangle whose position is this one shifted by the negation of ([other].first,
  * [other].second).
  *
- * This allocates a new [FlixelRect]; use [minusAssign] in per-frame code.
+ * This allocates a new [FlixelRect]; in per-frame code, change [FlixelRect.x] and [FlixelRect.y]
+ * directly instead.
  *
  * @param other A pair of (dx, dy) deltas.
  * @return A new translated rectangle.
