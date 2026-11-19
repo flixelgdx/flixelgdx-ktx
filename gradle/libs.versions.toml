@@ -5,6 +5,7 @@
 detekt = "2.0.0-alpha.6"
 dokka = "2.3.0"
 flixelgdx = "0.7.2"
+flixelgdx-video = "0.7.2"
 junit = "5.10.3"
 kotlin = "2.3.21"
 spotless = "6.25.0"
@@ -16,6 +17,7 @@ dokka-gradle-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", vers
 flixelgdx-core = { module = "org.flixelgdx:flixelgdx-core", version.ref = "flixelgdx" }
 flixelgdx-desktop = { module = "org.flixelgdx:flixelgdx-desktop", version.ref = "flixelgdx" }
 flixelgdx-ui = { module = "org.flixelgdx:flixelgdx-ui", version.ref = "flixelgdx" }
+flixelgdx-video-core = { module = "org.flixelgdx:flixelgdx-video-core", version.ref = "flixelgdx-video" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
