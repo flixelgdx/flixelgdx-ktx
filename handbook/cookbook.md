@@ -77,10 +77,16 @@ Keep it in a field: `val handler = SignalHandler<Int> { ... }`, then `signal += 
 `first.then { secondTween() }`, or `await()` both in a coroutine. ([Tweens and Animation](tweens-and-animation.md#chaining-tweens-with-then))
 
 **...register animation clips?**
-`sprite.animations { add("run", 0..5, fps = 12f) }` ([Tweens and Animation](tweens-and-animation.md#registering-animation-clips))
+`sprite.animations { add("run", 0..5, frameRate = 12) }` ([Tweens and Animation](tweens-and-animation.md#registering-animation-clips))
+
+**...register a clip that plays once?**
+`add("jump", 6..9, frameRate = 12, loop = false)`
 
 **...use clips from an atlas?**
 `sprite.animations { addByPrefix("idle", "hero idle ", frameRate = 24) }`
+
+**...use only some numbered frames from an atlas?**
+`sprite.animations { addByIndices("danceLeft", "gf dance", 0..7, frameRate = 24) }`
 
 ## Math and colors
 
