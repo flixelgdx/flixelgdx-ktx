@@ -6,7 +6,7 @@
 /// goals inside the block. Every setting has a default, so only the goals are required:
 ///
 /// ```kotlin
-/// sprite.tween(duration = 1.5f, ease = FlixelEase::quadOut, onComplete = { it.destroy() }) {
+/// sprite.tween(duration = 1.5f, ease = FlixelEase::quadOut, onComplete = { sprite.kill() }) {
 ///   goal(sprite::getX, 300f, sprite::setX)
 ///   goal(sprite::getY, 0f, sprite::setY)
 /// }

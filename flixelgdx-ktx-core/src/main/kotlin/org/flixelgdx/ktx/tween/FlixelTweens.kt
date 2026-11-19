@@ -70,7 +70,7 @@ class FlixelTweenGoalScope(val settings: FlixelTweenSettings) {
  *
  * Example:
  * ```
- * sprite.tween(duration = 2f, ease = FlixelEase::quadOut, onComplete = { it.destroy() }) {
+ * sprite.tween(duration = 2f, ease = FlixelEase::quadOut, onComplete = { sprite.kill() }) {
  *   goal(sprite::getX, 100f, sprite::setX)
  *   goal(sprite::getY, 0f, sprite::setY)
  * }
