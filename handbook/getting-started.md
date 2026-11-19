@@ -16,8 +16,8 @@ rules that keep Kotlin code as fast as the Java it replaces.
 
 ## Requirements
 
-- **Kotlin 2.0 or newer** in the module that holds your game code.
-- **Java 17 or newer** to build.
+- **Kotlin 2.2 or newer** in the module that holds your game code.
+- **Java 25 or newer** to build and run, the same as the framework.
 - A FlixelGDX game project. If you do not have one yet, follow the framework's
   [Getting Started guide](https://github.com/flixelgdx/flixelgdx/blob/master/handbook/getting-started.md) first, then
   come back here.
