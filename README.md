@@ -4,7 +4,7 @@
 
   [![Maven Central](https://img.shields.io/maven-central/v/org.flixelgdx/flixelgdx-ktx-core)](https://central.sonatype.com/artifact/org.flixelgdx/flixelgdx-ktx-core)
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-  [![FlixelGDX 0.7.0](https://img.shields.io/badge/FlixelGDX-0.7.0-red)](https://kotlinlang.org/)
+  [![FlixelGDX 0.7.3](https://img.shields.io/badge/FlixelGDX-0.7.3-red)](https://kotlinlang.org/)
   [![Kotlin 2.0+](https://img.shields.io/badge/Kotlin-2.0%2B-blue)](https://kotlinlang.org/)
   [![Java 25+](https://img.shields.io/badge/Java-25%2B-orange)](https://adoptium.net/temurin/releases?version=25)
 
@@ -174,6 +174,21 @@ fun confirmQuit() = launch {
 Just like the UI extension itself, none of this reads input: your game still decides when a widget is hovered or
 clicked (the UI extension's `FlixelUiPointer` makes that a few lines).
 
+### Video
+
+If your game uses [FlixelGDX Video](https://github.com/flixelgdx/flixelgdx-video), the `flixelgdx-ktx-video` module
+lets a coroutine wait on a video, so an intro or cutscene reads top to bottom:
+
+```kotlin
+launch {
+  intro.play()
+  intro.awaitReady()   // Wait until the first frame is decoded and the size is known.
+  intro.screenCenter()
+  intro.await()        // Wait until the video finishes.
+  Flixel.switchState { MenuState() }
+}
+```
+
 ---
 
 ## How do I install it?
@@ -189,6 +204,7 @@ flixelgdx-ktx = "<flixelgdx-version>"
 [libraries]
 flixelgdx-ktx-core = { module = "org.flixelgdx:flixelgdx-ktx-core", version.ref = "flixelgdx-ktx" }
 flixelgdx-ktx-ui = { module = "org.flixelgdx:flixelgdx-ktx-ui", version.ref = "flixelgdx-ktx" }
+flixelgdx-ktx-video = { module = "org.flixelgdx:flixelgdx-ktx-video", version.ref = "flixelgdx-ktx" }
 ```
 
 ```kotlin
@@ -196,6 +212,7 @@ flixelgdx-ktx-ui = { module = "org.flixelgdx:flixelgdx-ktx-ui", version.ref = "f
 dependencies {
   implementation(libs.flixelgdx.ktx.core)
   implementation(libs.flixelgdx.ktx.ui) // If you use FlixelGDX UI.
+  implementation(libs.flixelgdx.ktx.video) // If you use FlixelGDX Video.
 }
 ```
 
@@ -211,6 +228,7 @@ repositories {
 dependencies {
   implementation("org.flixelgdx:flixelgdx-ktx-core:<flixelgdx-version>")
   implementation("org.flixelgdx:flixelgdx-ktx-ui:<flixelgdx-version>")  // If you use FlixelGDX UI.
+  implementation("org.flixelgdx:flixelgdx-ktx-video:<flixelgdx-version>")  // If you use FlixelGDX Video.
 }
 ```
 
@@ -227,6 +245,13 @@ dependencies {
 <dependency>
     <groupId>org.flixelgdx</groupId>
     <artifactId>flixelgdx-ktx-ui</artifactId>
+    <version>FLIXELGDX-VERSION</version>
+</dependency>
+
+<!-- If you use FlixelGDX Video. -->
+<dependency>
+    <groupId>org.flixelgdx</groupId>
+    <artifactId>flixelgdx-ktx-video</artifactId>
     <version>FLIXELGDX-VERSION</version>
 </dependency>
 ```

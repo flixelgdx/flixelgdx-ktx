@@ -4,9 +4,9 @@
  * <p>Declares the build-logic included build so convention plugins are available to all
  * subprojects, centralizes repository declarations, and includes every Kotlin extension module.
  *
- * <p>When sibling checkouts of the framework (../flixelgdx) or the UI extension (../flixelgdx-ui)
- * exist, they are included as composite builds, so the modules compile against local source
- * instead of the published artifacts.
+ * <p>When sibling checkouts of the framework (../flixelgdx), the UI extension (../flixelgdx-ui), or
+ * the video extension (../flixelgdx-video) exist, they are included as composite builds, so the
+ * modules compile against local source instead of the published artifacts.
  */
 
 pluginManagement {
@@ -27,7 +27,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "flixelgdx-ktx"
 
-include("flixelgdx-ktx-core", "flixelgdx-ktx-ui")
+include("flixelgdx-ktx-core", "flixelgdx-ktx-ui", "flixelgdx-ktx-video")
 
 if (file("../flixelgdx").isDirectory) {
   includeBuild("../flixelgdx")
@@ -35,4 +35,8 @@ if (file("../flixelgdx").isDirectory) {
 
 if (file("../flixelgdx-ui").isDirectory) {
   includeBuild("../flixelgdx-ui")
+}
+
+if (file("../flixelgdx-video").isDirectory) {
+  includeBuild("../flixelgdx-video")
 }
