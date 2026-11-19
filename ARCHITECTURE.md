@@ -11,7 +11,7 @@ For a full picture of how FlixelGDX itself is organized, see the
 
 ## Modules
 
-The project is split into two published modules and one build-only module:
+The project is split into three published modules and one build-only module:
 
 - **`flixelgdx-ktx-core`**: The main extension module. Provides Kotlin operator sugar, DSL builders,
   and property delegates for the core framework API (collections, tweens, signals, saves, math types, groups,
@@ -32,6 +32,12 @@ The project is split into two published modules and one build-only module:
   `dialog(...)` that suspends until the player picks a result. Depends on `flixelgdx-ktx-core` and
   `flixelgdx-ui` via `api`. Games that do not use the UI extension never pull it in.
 
+- **`flixelgdx-ktx-video`**: Coroutine helpers for the [FlixelGDX Video](https://github.com/flixelgdx/flixelgdx-video)
+  extension in `org.flixelgdx.ktx.video`: `await()` and `playAndAwait()` suspend until a video finishes, and
+  `awaitReady()` suspends until its first frame is decoded. Depends on `flixelgdx-ktx-core` and
+  `flixelgdx-video-core` via `api`, so it works with any video backend. Games that do not use the video
+  extension never pull it in.
+
 - **`build-logic/`**: The `flixelgdx.kotlin-library` convention plugin lives here. It wires up the Kotlin
   JVM toolchain (Java 25 target, Kotlin 2.0 API), Spotless formatting with ktfmt (Google style),
   detekt static analysis, Dokka HTML docs, and the Vanniktech Maven publishing pipeline. This module is
@@ -43,7 +49,7 @@ The project is split into two published modules and one build-only module:
 
 | Path                                                              | Purpose                                                                                                                                                |
 |-------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `settings.gradle.kts`                                             | Declares the submodules, wires `build-logic`, and includes sibling `../flixelgdx` and `../flixelgdx-ui` checkouts as composite builds when they exist. |
+| `settings.gradle.kts`                                             | Declares the submodules, wires `build-logic`, and includes sibling `../flixelgdx`, `../flixelgdx-ui`, and `../flixelgdx-video` checkouts as composite builds when they exist. |
 | `gradle.properties`                                               | JVM flags, `projectVersion`, `groupId`, and Maven POM metadata.                                                                                        |
 | `gradle/libs.versions.toml`                                       | Version catalog: all dependency and plugin versions in one place.                                                                                      |
 | `build-logic/src/main/kotlin/flixelgdx.kotlin-library.gradle.kts` | Convention plugin applied to every module.                                                                                                             |
@@ -60,6 +66,7 @@ FlixelGDX KTX uses **Gradle** with **Kotlin DSL**.
 |------------------------------------------|------------------------------------------------------------------------------------|
 | `./gradlew :flixelgdx-ktx-core:test`     | Run core module unit tests.                                                        |
 | `./gradlew :flixelgdx-ktx-ui:test`       | Run UI module unit tests.                                                          |
+| `./gradlew :flixelgdx-ktx-video:test`    | Run video module unit tests.                                                       |
 | `./gradlew test`                         | Run every module's unit tests.                                                     |
 | `./gradlew spotlessApply`                | Auto-format all Kotlin source with ktfmt (Google style).                           |
 | `./gradlew spotlessCheck`                | Check formatting without modifying files (used in CI).                             |

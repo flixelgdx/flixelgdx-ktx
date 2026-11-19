@@ -87,6 +87,9 @@ Unit tests live inside each module rather than a shared test module. Run them in
 # UI extensions and UI coroutine helpers.
 ./gradlew :flixelgdx-ktx-ui:test
 
+# Video coroutine helpers.
+./gradlew :flixelgdx-ktx-video:test
+
 # Every module at once.
 ./gradlew test
 ```

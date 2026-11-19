@@ -9,19 +9,22 @@ It is a **pure syntax layer**: operator overloads, extension functions, property
 that make the Java-based FlixelGDX API feel natural from Kotlin. It contains no runtime logic of its own and
 adds no new framework behavior.
 
-This repository has two published modules:
+This repository has three published modules:
 
 - **`flixelgdx-ktx-core`**: Extensions for collections, tweens, signals, saves, math types, groups, colors,
   and animations, plus coroutine integration (`org.flixelgdx.ktx.async`).
 - **`flixelgdx-ktx-ui`**: Builder DSL, skin DSL, bindings, and sugar for the
   [FlixelGDX UI](https://github.com/flixelgdx/flixelgdx-ui) extension; depends on `flixelgdx-ktx-core` and
   `flixelgdx-ui`.
+- **`flixelgdx-ktx-video`**: Coroutine helpers for videos from the
+  [FlixelGDX Video](https://github.com/flixelgdx/flixelgdx-video) extension; depends on `flixelgdx-ktx-core`
+  and `flixelgdx-video-core`.
 
 The UI module follows the UI extension's own rule: **the UI never reads input.** Do not add helpers that read
 `Flixel.mouse`, `Flixel.keys`, touches, or gamepads on the game's behalf.
 
-When `../flixelgdx` or `../flixelgdx-ui` exist next to this repository, `settings.gradle.kts` includes them as
-composite builds, so the modules compile against those local checkouts.
+When `../flixelgdx`, `../flixelgdx-ui`, or `../flixelgdx-video` exist next to this repository,
+`settings.gradle.kts` includes them as composite builds, so the modules compile against those local checkouts.
 
 Runtime verification happens in a **separate game project** that consumes the extension via
 `publishToMavenLocal`, a composite build, or JitPack.
@@ -78,7 +81,7 @@ Prefer:
 
 ### No standard Java collections
 
-Standard Java collection types (`ArrayList`, `HashMap`, `HashSet`, etc.) are banned in both modules for the
+Standard Java collection types (`ArrayList`, `HashMap`, `HashSet`, etc.) are banned in every module for the
 same reasons they are banned in the base framework: they allocate too much garbage and consume too much
 memory. Use FlixelGDX collection types (`FlixelArray`, `FlixelMap`, `FlixelSet`, and so on) instead.
 The only exception is build-time code (Gradle plugins), which does not run at game runtime.
