@@ -33,7 +33,7 @@ The project is split into two published modules and one build-only module:
   `flixelgdx-ui` via `api`. Games that do not use the UI extension never pull it in.
 
 - **`build-logic/`**: The `flixelgdx.kotlin-library` convention plugin lives here. It wires up the Kotlin
-  JVM toolchain (Java 17 target, Kotlin 2.0 API), Spotless formatting with ktfmt (Google style),
+  JVM toolchain (Java 25 target, Kotlin 2.0 API), Spotless formatting with ktfmt (Google style),
   detekt static analysis, Dokka HTML docs, and the Vanniktech Maven publishing pipeline. This module is
   never published; it only exists to keep each subproject's `build.gradle.kts` short.
 
