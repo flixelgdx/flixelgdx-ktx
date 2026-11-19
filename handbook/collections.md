@@ -78,11 +78,9 @@ scores.forEach { score -> total += score } // Inlined: no lambda object, no iter
 for (score in scores) { /* ... */ }        // Works too, but creates one iterator per loop.
 ```
 
-They all get `+=`, `lastIndex`, `indices`, `forEach { }`, and `for` loops, with two small exceptions:
-
-- `FlixelCharArray` has no `-=`, `forEach`, or extension `iterator()`. It is a `CharSequence`, so Kotlin's own
-  `for (c in chars)` and `c in chars` already work on it.
-- Every primitive array except `FlixelCharArray` gets `-=`, which removes the first matching value.
+They all get `+=`, `-=` (which removes the first matching value), `lastIndex`, `indices`, `forEach { }`, and `for`
+loops, with one exception: `FlixelCharArray` has no `-=`, `forEach`, or extension `iterator()`. It is a
+`CharSequence`, so Kotlin's own `for (c in chars)` and `c in chars` already work on it.
 
 ## Maps
 
