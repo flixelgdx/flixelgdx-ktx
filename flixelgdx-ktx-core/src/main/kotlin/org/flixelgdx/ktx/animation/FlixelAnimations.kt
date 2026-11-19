@@ -25,6 +25,7 @@
 
 package org.flixelgdx.ktx.animation
 
+import kotlin.math.roundToInt
 import org.flixelgdx.FlixelSprite
 import org.flixelgdx.FlixelState
 import org.flixelgdx.animation.FlixelAnimationController
@@ -47,10 +48,9 @@ class FlixelAnimationScope(val controller: FlixelAnimationController) {
   /**
    * Registers an animation from a grid-frame index range.
    *
-   * The range is converted to an `int[]` and passed to [FlixelAnimationController.addAnimation].
-   * The [fps] parameter is the desired playback speed in frames-per-second; internally this is
-   * stored as `1f / fps` (seconds per frame), which is what
-   * [FlixelAnimationController.addAnimation] expects as its third argument.
+   * The range is converted to an `int[]` and passed to [FlixelAnimationController.add]. The [fps]
+   * parameter is the desired playback speed in frames per second. It is rounded to the nearest
+   * whole number (at least `1`), since that is what [FlixelAnimationController.add] expects.
    *
    * ```
    * sprite.animations {
@@ -65,7 +65,7 @@ class FlixelAnimationScope(val controller: FlixelAnimationController) {
    */
   fun add(name: String, frames: IntRange, fps: Float = DEFAULT_FRAME_RATE.toFloat()) {
     val indices = frames.toList().toIntArray()
-    controller.addAnimation(name, indices, 1f / fps)
+    controller.add(name, indices, fps.roundToInt().coerceAtLeast(1))
   }
 
   /**
