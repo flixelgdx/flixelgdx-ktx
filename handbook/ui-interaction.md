@@ -59,8 +59,8 @@ A new lambda written at the removal site is a different object and removes nothi
 ## Two-way bindings
 
 A settings screen is mostly "show this value, and write it back when the player changes it." `bind(property)` does
-both: it shows the property's current value in the widget (without firing the widget's change signal), then writes
-every change back to the property.
+both: it shows the property's current value in the widget, then writes every change back to the property. Showing the
+value does not fire the widget's change signal, except on a text box (see the table below).
 
 ```kotlin
 class Settings {
@@ -94,9 +94,9 @@ player leaves the screen.
 | Widget                | Binds to         | Notes                                                              |
 |-----------------------|------------------|--------------------------------------------------------------------|
 | `FlixelUiCheckbox`    | `Boolean`        |                                                                    |
-| `FlixelTextBox`       | `String`         | Each edit copies the text into a new string, so use it for short fields. |
+| `FlixelTextBox`       | `String`         | Each edit copies the text into a new string, so use it for short fields. Showing the stored text fires `onChange` if it differs from the box's text, so bind before adding other `onChange` handlers. |
 | `FlixelUiDropdown`    | `Int` (the index)| Add the items before binding.                                      |
-| `FlixelUiRadioGroup`  | `Int` (the index)| Add the radio buttons before binding. An index outside the group leaves the selection alone. |
+| `FlixelUiRadioGroup`  | `Int` (the index)| Add the radio buttons before binding. An index outside the group clears the selection. |
 | `FlixelUiSlider`      | `Float`          | Set the range before binding. A stored value outside the range is clamped in the slider, but the property keeps the original until the player moves the slider. |
 
 Bindings go one way after the first read: **changing the property from code does not update the widget.** Bind again,
