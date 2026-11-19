@@ -25,7 +25,7 @@ package org.flixelgdx.ktx.ui
 
 import org.flixelgdx.Flixel
 import org.flixelgdx.FlixelCamera
-import org.flixelgdx.backend.desktop.file.FlixelJvmFiles
+import org.flixelgdx.backend.desktop.file.FlixelDesktopFiles
 import org.flixelgdx.ui.FlixelUiDisplay
 import org.flixelgdx.ui.skin.FlixelTextBoxStyle
 import org.flixelgdx.ui.skin.FlixelUiButtonStyle
@@ -45,8 +45,8 @@ import org.flixelgdx.ui.skin.FlixelUiSliderStyle
  * default font. Without it, text never lays out, and text box caret math fails.
  */
 fun headlessCamera(): FlixelCamera {
-  if (Flixel.files !is FlixelJvmFiles) {
-    Flixel.files = FlixelJvmFiles()
+  if (Flixel.files !is FlixelDesktopFiles) {
+    Flixel.files = FlixelDesktopFiles()
   }
   Flixel.cameras.clear()
   val camera = FlixelCamera(640, 360)
