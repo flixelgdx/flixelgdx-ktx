@@ -108,7 +108,7 @@ editing, replace it with the recommended alternative.
 - All source is formatted with **ktfmt** (Google style, 2-space indentation). Run
   `./gradlew spotlessApply` before committing. CI rejects unformatted code.
 - Target **Kotlin 2.0** language and API version. Do not use features introduced after that version.
-- Target **Java 17** bytecode via the JVM toolchain.
+- Target **Java 25** bytecode via the JVM toolchain.
 - Use `@Suppress` sparingly. If detekt flags something, fix it or add a brief comment explaining why
   the suppression is warranted.
 - Prefer `inline` for extension functions that accept lambdas unless there is a specific reason not to.

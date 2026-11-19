@@ -6,7 +6,7 @@
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
   [![FlixelGDX 0.7.0](https://img.shields.io/badge/FlixelGDX-0.7.0-red)](https://kotlinlang.org/)
   [![Kotlin 2.0+](https://img.shields.io/badge/Kotlin-2.0%2B-blue)](https://kotlinlang.org/)
-  [![Java 17+](https://img.shields.io/badge/Java-17%2B-orange)](https://adoptium.net/temurin/releases?version=17)
+  [![Java 25+](https://img.shields.io/badge/Java-25%2B-orange)](https://adoptium.net/temurin/releases?version=25)
 
   FlixelGDX KTX is a powerful, all-in-one Kotlin extension of the Java-based game framework [FlixelGDX](https://github.com/flixelgdx/flixelgdx/).
   If you like the simplicity of the framework's API, but want to use Kotlin-flavored syntax and features with it, this extension
