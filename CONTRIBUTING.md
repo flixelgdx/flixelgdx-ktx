@@ -39,8 +39,8 @@ See the [Compiling guide](COMPILING.md) for full setup steps.
 Run all of the following before opening a pull request:
 
 ```bash
-# Run all unit tests across both modules.
-./gradlew :flixelgdx-ktx-core:test :flixelgdx-ktx-ui:test
+# Run all unit tests across every module.
+./gradlew test
 
 # Auto-format source files.
 ./gradlew spotlessApply
