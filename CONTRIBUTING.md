@@ -29,7 +29,7 @@ If your change adds new runtime behavior or a new framework feature, it belongs 
 
 ## Java runtime (JDK 17, Eclipse Temurin)
 
-Same requirement as the base framework: use **[Eclipse Temurin 17](https://adoptium.net/temurin/releases/?version=17)**.
+Same requirement as the base framework: use **[Eclipse Temurin 25](https://adoptium.net/temurin/releases/?version=25)**.
 See the [Compiling guide](COMPILING.md) for full setup steps.
 
 ---
@@ -64,7 +64,7 @@ all of those pass.
 - All source is formatted with **ktfmt** (Google style, 2-space indentation). Run `./gradlew spotlessApply`
   before committing; CI will reject unformatted code.
 - Target **Kotlin 2.0** language and API version. Do not use features introduced after that version.
-- Target **Java 17** bytecode via the JVM toolchain.
+- Target **Java 25** bytecode via the JVM toolchain.
 - Use `@Suppress` sparingly. If detekt flags something, either fix it or add a comment explaining why
   the suppression is warranted.
 
