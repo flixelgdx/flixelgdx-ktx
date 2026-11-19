@@ -7,7 +7,7 @@ import dev.detekt.gradle.Detekt
  * Convention for FlixelGDX KTX Kotlin library modules.
  *
  * Covers: project coordinates (group/version from root gradle.properties), IDE metadata,
- * Java compile encoding, Kotlin JVM targeting a Java 17 toolchain, the java-library surface area,
+ * Java compile encoding, Kotlin JVM targeting a Java 25 toolchain, the java-library surface area,
  * Spotless formatting (ktfmt Google style), detekt static analysis, Dokka HTML docs, and the
  * Vanniktech Maven publish pipeline targeting Sonatype Central Portal.
  *
@@ -48,7 +48,7 @@ kotlin {
   jvmToolchain(25)
 
   // Build against an older Kotlin baseline than the compiler so the published artifact stays
-  // consumable by projects on older Kotlin toolchains. The compiler is 2.0.x, but emitting
+  // consumable by projects on older Kotlin toolchains. The compiler is newer, but emitting
   // 2.0 metadata and depending on the 2.0 standard library keeps the module readable by
   // any consumer on Kotlin 2.0 or newer.
   coreLibrariesVersion = "2.0.21"
