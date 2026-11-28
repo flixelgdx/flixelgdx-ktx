@@ -37,16 +37,16 @@ import org.flixelgdx.util.FlixelColor
  */
 
 /** The red channel, enabling `val (r, g, b, a) = color`. */
-operator fun FlixelColor.component1(): Float = r
+operator fun FlixelColor.component1(): Float = red
 
 /** The green channel, enabling `val (r, g, b, a) = color`. */
-operator fun FlixelColor.component2(): Float = g
+operator fun FlixelColor.component2(): Float = green
 
 /** The blue channel, enabling `val (r, g, b, a) = color`. */
-operator fun FlixelColor.component3(): Float = b
+operator fun FlixelColor.component3(): Float = blue
 
 /** The alpha channel, enabling `val (r, g, b, a) = color`. */
-operator fun FlixelColor.component4(): Float = a
+operator fun FlixelColor.component4(): Float = alpha
 
 /**
  * Builds a color from this packed `RGBA8888` integer, as in `0xFF00FFFF.toInt().toFlixelColor()`.
