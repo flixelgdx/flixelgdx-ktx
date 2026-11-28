@@ -41,9 +41,9 @@ import org.flixelgdx.signal.FlixelSignal
 /**
  * Tests for [FlixelJob] state, [cancelAllCoroutines], and how cancellation reaches a coroutine.
  *
- * NOTE: [installFlixelCoroutines] subscribes to [Flixel.Signals.preStateSwitch], a static global.
- * To keep these tests isolated from global state, they call [cancelAllCoroutines] directly, which
- * is the same call [installFlixelCoroutines] makes on a state switch.
+ * NOTE: [installFlixelCoroutines] registers [FlixelCoroutineManager] in [Flixel.managers], a static
+ * global. To keep these tests isolated from global state, they call [cancelAllCoroutines] directly,
+ * which is the same call [installFlixelCoroutines] makes on a state switch.
  */
 class JobCancellationTest {
 
