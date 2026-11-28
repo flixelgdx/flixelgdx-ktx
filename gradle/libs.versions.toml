@@ -5,7 +5,7 @@
 detekt = "2.0.0-alpha.6"
 dokka = "2.3.0"
 flixelgdx = "0.7.4"
-flixelgdx-ui = "0.7.2"
+flixelgdx-ui = "1.0.0"
 flixelgdx-video = "0.7.2"
 junit = "5.10.3"
 kotlin = "2.3.21"
