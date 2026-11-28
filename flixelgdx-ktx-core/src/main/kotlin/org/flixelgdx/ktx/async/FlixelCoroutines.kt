@@ -29,7 +29,9 @@ import kotlin.coroutines.ContinuationInterceptor
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.startCoroutine
 import org.flixelgdx.Flixel
+import org.flixelgdx.FlixelManagers
 import org.flixelgdx.collections.FlixelArray
+import org.flixelgdx.signal.FlixelSignalData.StateSwitchSignalData
 
 /**
  * Runs resumed coroutines on the game thread, one dispatcher pass per frame.
@@ -136,25 +138,60 @@ private class GameThreadContinuation<T>(private val continuation: Continuation<T
   }
 }
 
-private var installed: Boolean = false
+/**
+ * The manager that drives [Dispatcher] from the game loop.
+ *
+ * Think of it as the conductor who walks the train once per frame and wakes every passenger whose
+ * stop has come. [installFlixelCoroutines] registers it in [Flixel.managers], so you rarely touch
+ * it directly. Once registered, it:
+ * - runs [Dispatcher.update] in [postUpdate], right after the state updates, so resumed coroutines
+ *   see this frame's movement and collisions;
+ * - cancels every coroutine in [preStateSwitch], so a sequence never leaks into the next state;
+ * - cancels every coroutine in [destroy], when the game closes.
+ *
+ * It is pausable, like the framework's tweens and timers: while the game is paused (for example by
+ * the debugger), coroutines stay where they are and resume when the game does.
+ *
+ * Example:
+ * ```
+ * installFlixelCoroutines()
+ * check(Flixel.managers.contains(FlixelCoroutineManager))
+ * ```
+ */
+object FlixelCoroutineManager : FlixelManagers.Manager {
+
+  /** The section name this manager uses in [Flixel.profiler]. */
+  const val NAME: String = "ktx.coroutines"
+
+  override fun postUpdate(elapsed: Float) {
+    Dispatcher.update()
+  }
+
+  override fun preStateSwitch(data: StateSwitchSignalData) {
+    cancelAllCoroutines()
+  }
+
+  override fun destroy() {
+    cancelAllCoroutines()
+  }
+
+  override fun getName(): String = NAME
+}
 
 /**
  * Wires [Dispatcher] into the game loop exactly once.
  *
- * Subscribes [Dispatcher.update] to [Flixel.Signals.postUpdate] so that resumed coroutines run
- * every frame. Also subscribes [cancelAllCoroutines] to [Flixel.Signals.preStateSwitch], so
- * coroutines never leak from one state into the next. Coroutines launched in the next state run
- * normally without calling this function again.
+ * Registers [FlixelCoroutineManager] in [Flixel.managers], so resumed coroutines run every frame
+ * right after the state updates, and every running coroutine is canceled on a state switch so none
+ * leaks from one state into the next. Coroutines launched in the next state run normally without
+ * calling this function again.
  *
  * Calling this more than once is safe; subsequent calls are no-ops.
  */
 fun installFlixelCoroutines() {
-  if (installed) {
-    return
+  if (!Flixel.managers.contains(FlixelCoroutineManager)) {
+    Flixel.managers.add(FlixelCoroutineManager)
   }
-  installed = true
-  Flixel.Signals.postUpdate.add { Dispatcher.update() }
-  Flixel.Signals.preStateSwitch.add { cancelAllCoroutines() }
 }
 
 /**
