@@ -67,11 +67,13 @@ override fun create() {
 }
 ```
 
-It does two things:
+It registers `FlixelCoroutineManager` in `Flixel.managers`, which does three things:
 
-- Hooks the coroutine dispatcher into the game loop, so paused coroutines resume after each update.
+- Hooks the coroutine dispatcher into the game loop, so waiting coroutines resume right after the state updates.
 - **Cancels every running coroutine whenever the state switches**, so a sequence from the last level never keeps
   running in the next one.
+- Holds every coroutine in place while the game is paused (for example by the debugger), the same way tweens and
+  timers stop, and lets them carry on when the game resumes.
 
 Calling it again later is harmless; every call after the first does nothing.
 

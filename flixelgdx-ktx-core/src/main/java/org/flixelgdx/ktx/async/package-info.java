@@ -7,9 +7,11 @@
 ///
 /// ## Setup
 ///
-/// Call `installFlixelCoroutines()` once, for example in your game's `create()`. It hooks the
-/// dispatcher into the game loop and cancels all running coroutines whenever the state switches,
-/// so a coroutine never leaks into the next state. Calling it again does nothing.
+/// Call `installFlixelCoroutines()` once, for example in your game's `create()`. It registers
+/// `FlixelCoroutineManager` in `Flixel.managers`, which runs the dispatcher right after the state
+/// updates and cancels all running coroutines whenever the state switches, so a coroutine never
+/// leaks into the next state. Like tweens and timers, coroutines wait while the game is paused.
+/// Calling it again does nothing.
 ///
 /// ## Launching and waiting
 ///

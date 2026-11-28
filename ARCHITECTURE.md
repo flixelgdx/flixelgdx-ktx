@@ -19,7 +19,7 @@ The project is split into three published modules and one build-only module:
   separately.
 
   It also holds the coroutine integration in the `org.flixelgdx.ktx.async` package: the
-  `installFlixelCoroutines()` entry point, `launch`, `FlixelJob`, and `suspend` wrappers so you can `await()`
+  `installFlixelCoroutines()` entry point (which registers `FlixelCoroutineManager` in `Flixel.managers`), `launch`, `FlixelJob`, and `suspend` wrappers so you can `await()`
   tweens and signals or `delay()` for a given number of game-loop seconds. It is built only on the coroutine
   support in the Kotlin standard library (`kotlin.coroutines`), not on `kotlinx-coroutines`, because kotlinx
   relies on threads, locks, and atomics that TeaVM cannot compile for web builds. Do not add a dependency on
